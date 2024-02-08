@@ -10,5 +10,5 @@ public class UserCreateRequest {
     private String nickname;
     private Position position;
     private int careerYear;
-    private List<Integer> techIdList;
+    private List<Long> techIdList;
 }

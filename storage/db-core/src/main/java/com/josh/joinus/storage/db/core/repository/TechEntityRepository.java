@@ -28,4 +28,11 @@ public class TechEntityRepository implements TechRepository {
                 .stream().map(TechEntity::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Tech> findByTechIdIn(List<Long> techIdList) {
+        return techJpaRepository.findByIdIn(techIdList)
+                .stream().map(TechEntity::toDomain)
+                .collect(Collectors.toList());
+    }
 }
