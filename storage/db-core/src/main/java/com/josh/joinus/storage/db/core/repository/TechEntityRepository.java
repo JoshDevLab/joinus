@@ -17,9 +17,9 @@ public class TechEntityRepository implements TechRepository {
     private final TechJpaRepository techJpaRepository;
 
     @Override
-    public void add(String name) {
+    public Tech add(String name) {
         TechEntity techEntity = TechEntity.create(name);
-        techJpaRepository.save(techEntity);
+        return techJpaRepository.save(techEntity).toDomain();
     }
 
     @Override

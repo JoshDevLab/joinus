@@ -9,7 +9,7 @@ public class TechWriter {
 
     private final TechRepository techRepository;
 
-    public void add(String name) {
-        techRepository.add(name);
+    public Tech add(String name) {
+       return techRepository.add(name);
     }
 }

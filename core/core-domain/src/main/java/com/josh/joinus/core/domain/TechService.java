@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class TechService {
     private final TechWriter techWriter;
 
-    public void add(String name) {
-        techWriter.add(name);
+    public Tech add(String name) {
+        return techWriter.add(name);
     }
 }
