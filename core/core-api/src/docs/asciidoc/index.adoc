@@ -13,26 +13,12 @@ This is the Core API documentation.
 
 == Example API
 
-=== Example GET API
+=== Add POST API
 ==== Curl Request
-include::{snippets}/exampleGet/curl-request.adoc[]
-==== Path Parameters
-include::{snippets}/exampleGet/path-parameters.adoc[]
-==== Query Parameters
-include::{snippets}/exampleGet/query-parameters.adoc[]
-==== Http Response
-include::{snippets}/exampleGet/http-response.adoc[]
-==== Response Fields
-include::{snippets}/exampleGet/response-fields.adoc[]
-
-'''
-
-=== Example POST API
-==== Curl Request
-include::{snippets}/examplePost/curl-request.adoc[]
+include::{snippets}/add/curl-request.adoc[]
 ==== Request Fields
-include::{snippets}/examplePost/request-fields.adoc[]
+include::{snippets}/add/request-fields.adoc[]
 ==== Http Response
-include::{snippets}/examplePost/http-response.adoc[]
+include::{snippets}/add/http-response.adoc[]
 ==== Response Fields
-include::{snippets}/examplePost/response-fields.adoc[]
+include::{snippets}/add/response-fields.adoc[]

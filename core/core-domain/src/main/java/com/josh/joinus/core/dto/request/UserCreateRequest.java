@@ -14,7 +14,7 @@ public class UserCreateRequest {
     private List<Long> techIdList;
 
     @Builder
-    private UserCreateRequest(String nickname, Position position, int careerYear, List<Long> techIdList) {
+    public UserCreateRequest(String nickname, Position position, int careerYear, List<Long> techIdList) {
         this.nickname = nickname;
         this.position = position;
         this.careerYear = careerYear;
