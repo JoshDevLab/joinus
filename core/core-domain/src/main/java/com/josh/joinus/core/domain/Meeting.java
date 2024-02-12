@@ -15,6 +15,8 @@ public class Meeting extends Base {
     private List<Tech> techList = new ArrayList<>();
     private ProcessWay processWay;
     private MeetingStatus meetingStatus;
+    private LocalDateTime startDateTime;
+    private int headCount;
     private LocalDateTime expiredDateTime;
     private List<Position> positionList = new ArrayList<>();
 }
