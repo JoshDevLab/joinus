@@ -16,7 +16,6 @@ public class MeetingEntityRepository implements MeetingRepository {
 
     @Override
     public Meeting create(MeetingCreate meetingCreate) {
-        MeetingEntity meetingEntity = MeetingEntity.create(meetingCreate);
-        return null;
+        return meetingJpaRepository.save(MeetingEntity.create(meetingCreate)).toDomain();
     }
 }

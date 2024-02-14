@@ -2,6 +2,7 @@ package com.josh.joinus.storage.db.core.repository;
 
 import com.josh.joinus.core.domain.Tech;
 import com.josh.joinus.core.domain.TechRepository;
+import com.josh.joinus.storage.db.core.CoreDbContextTest;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
@@ -15,9 +16,7 @@ import java.util.List;
 import static org.assertj.core.groups.Tuple.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-@ActiveProfiles("local")
-class UserEntityRepositoryTest {
+class UserEntityRepositoryTest extends CoreDbContextTest {
     @Autowired
     TechEntityRepository techEntityRepository;
 

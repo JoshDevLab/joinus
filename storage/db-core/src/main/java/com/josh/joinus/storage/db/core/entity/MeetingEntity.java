@@ -4,6 +4,7 @@ import com.josh.joinus.core.domain.*;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "meeting")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class MeetingEntity extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +23,6 @@ public class MeetingEntity extends BaseEntity {
     private String meetingName;
     @Enumerated(EnumType.STRING)
     private MeetingType meetingType;
-    @Transient
-    private List<Long> techList = new ArrayList<>();
     @Enumerated(EnumType.STRING)
     private ProcessWay processWay;
     @Enumerated(EnumType.STRING)
@@ -30,7 +30,6 @@ public class MeetingEntity extends BaseEntity {
     private LocalDateTime startDateTime;
     private int headCount;
     private LocalDateTime expiredDateTime;
-    private List<Position> positionList = new ArrayList<>();
 
     public static MeetingEntity create(MeetingCreate meetingCreate) {
         return MeetingEntity.builder()
@@ -58,5 +57,19 @@ public class MeetingEntity extends BaseEntity {
         this.startDateTime = startDateTime;
         this.headCount = headCount;
         this.expiredDateTime = expiredDateTime;
+    }
+
+    public Meeting toDomain() {
+       return Meeting.builder()
+               .id(id)
+               .leaderUserId(leaderUserId)
+               .meetingName(meetingName)
+               .meetingType(meetingType)
+               .processWay(processWay)
+               .meetingStatus(meetingStatus)
+               .startDateTime(startDateTime)
+               .headCount(headCount)
+               .expiredDateTime(expiredDateTime)
+               .build();
     }
 }
