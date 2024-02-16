@@ -31,6 +31,10 @@ public class MeetingEntity extends BaseEntity {
     private int headCount;
     private LocalDateTime expiredDateTime;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "meetingEntity",
+                fetch = FetchType.LAZY)
+    private List<MeetingTechEntity> meetingTechEntityList = new ArrayList<>();
+
     public static MeetingEntity create(MeetingCreate meetingCreate) {
         return MeetingEntity.builder()
                 .leaderUserId(meetingCreate.getLeaderUserId())

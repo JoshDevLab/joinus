@@ -4,10 +4,12 @@ import com.josh.joinus.core.domain.Tech;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tech")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TechEntity {
     @Id

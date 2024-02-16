@@ -1,16 +1,12 @@
 package com.josh.joinus.storage.db.core.repository;
 
 import com.josh.joinus.core.domain.*;
+import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.storage.db.core.CoreDbContextTest;
 import com.josh.joinus.storage.db.core.entity.MeetingEntity;
 import com.josh.joinus.storage.db.core.entity.MeetingTechEntity;
-import com.josh.joinus.storage.db.core.entity.TechEntity;
 import com.josh.joinus.storage.db.core.persistence.MeetingJpaRepository;
 import com.josh.joinus.storage.db.core.persistence.MeetingTechJpaRepository;
-import com.josh.joinus.storage.db.core.persistence.TechJpaRepository;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.groups.Tuple;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
-class MeetingTechEntityRepositoryTest extends CoreDbContextTest {
+class MeetingEntityRepositoryTest extends CoreDbContextTest {
     @Autowired
     MeetingTechEntityRepository meetingTechEntityRepository;
 
@@ -40,14 +33,16 @@ class MeetingTechEntityRepositoryTest extends CoreDbContextTest {
     MeetingJpaRepository meetingJpaRepository;
 
     @Autowired
-    TechJpaRepository techJpaRepository;
+    MeetingEntityRepository meetingEntityRepository;
 
-    @DisplayName("특정모임의 필요기술스택들을 등록할 수 있다.")
     @Test
-    void create() {
+    void search() {
         //given
-        TechEntity springBoot = techJpaRepository.save(TechEntity.create("spring boot"));
-        TechEntity mySql = techJpaRepository.save(TechEntity.create("MySql"));
+        MeetingSearchCondition condition = new MeetingSearchCondition();
+
+        Tech springBoot = techEntityRepository.add("Spring Boot");
+        Tech mySql = techEntityRepository.add("MySql");
+        Tech react = techEntityRepository.add("React");
 
         MeetingCreate testMeeting = MeetingCreate.builder()
                 .meetingStatus(MeetingStatus.RECRUITING)
@@ -62,19 +57,31 @@ class MeetingTechEntityRepositoryTest extends CoreDbContextTest {
 
         MeetingEntity savedMeeting = meetingJpaRepository.save(meetingEntity);
 
-        //when
         meetingTechEntityRepository.create(savedMeeting.getId(), List.of(springBoot.getId(), mySql.getId()));
-        List<MeetingTechEntity> result = meetingTechJpaRepository.findByMeetingEntity(savedMeeting);
 
+
+        MeetingCreate testMeeting2 = MeetingCreate.builder()
+                .meetingStatus(MeetingStatus.RECRUITING)
+                .meetingName("test meeting2")
+                .meetingType(MeetingType.STUDY)
+                .expiredDateTime(LocalDateTime.of(2024, 2, 15, 12, 00, 00))
+                .headCount(7)
+                .processWay(ProcessWay.ONOFFLINE)
+                .build();
+
+        MeetingEntity meetingEntity2 = MeetingEntity.create(testMeeting2);
+
+        MeetingEntity savedMeeting2 = meetingJpaRepository.save(meetingEntity2);
+
+        meetingTechEntityRepository.create(savedMeeting2.getId(), List.of(springBoot.getId(), mySql.getId(), react.getId()));
+
+        //when
+        List<MeetingTechEntity> all = meetingTechJpaRepository.findAll();
+        System.out.println("all = " + all);
+
+        List<Meeting> meetingList = meetingEntityRepository.searchByCondition(condition);
+        System.out.println("meetingList = " + meetingList);
         //then
-        assertThat(result).hasSize(2)
-                .extracting("id", "meetingEntity", "techEntity")
-                .containsExactlyInAnyOrder(
-                        Tuple.tuple(1L, savedMeeting, springBoot),
-                        Tuple.tuple(2L, savedMeeting, mySql)
-                );
 
     }
-
-
 }

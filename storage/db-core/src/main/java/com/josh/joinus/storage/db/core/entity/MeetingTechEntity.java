@@ -11,20 +11,26 @@ import lombok.NoArgsConstructor;
 public class MeetingTechEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long meetingTechId;
-    private Long meetingId;
-    private Long techId;
+    private Long id;
 
-    public static MeetingTechEntity create(Long meetingId, Long techId) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "meeting_id")
+    private MeetingEntity meetingEntity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tech_id")
+    private TechEntity techEntity;
+
+    public static MeetingTechEntity create(MeetingEntity meetingEntity, TechEntity techEntity) {
         return MeetingTechEntity.builder()
-                .meetingId(meetingId)
-                .techId(techId)
+                .meetingEntity(meetingEntity)
+                .techEntity(techEntity)
                 .build();
     }
 
     @Builder
-    private MeetingTechEntity(Long meetingId, Long techId) {
-        this.meetingId = meetingId;
-        this.techId = techId;
+    private MeetingTechEntity(MeetingEntity meetingEntity, TechEntity techEntity) {
+        this.meetingEntity = meetingEntity;
+        this.techEntity = techEntity;
     }
 }
