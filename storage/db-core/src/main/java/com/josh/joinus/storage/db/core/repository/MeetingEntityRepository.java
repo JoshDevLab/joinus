@@ -47,13 +47,6 @@ public class MeetingEntityRepository implements MeetingRepository {
 //                )
                 .fetch();
 
-        List<MeetingTechEntity> all = meetingTechJpaRepository.findAll();
-        System.out.println("all = " + all);
-
-        boolean actualTransactionActive = TransactionSynchronizationManager.isActualTransactionActive();
-
-        List<MeetingTechEntity> meetingTechEntityList = meetingEntityList.get(0).getMeetingTechEntityList();
-        System.out.println("meetingTechEntityList = " + meetingTechEntityList);
         return meetingEntityList.stream().map(MeetingEntity::toDomain).collect(Collectors.toList());
 
 

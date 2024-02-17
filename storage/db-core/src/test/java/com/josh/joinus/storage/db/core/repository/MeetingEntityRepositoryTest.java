@@ -7,6 +7,7 @@ import com.josh.joinus.storage.db.core.entity.MeetingEntity;
 import com.josh.joinus.storage.db.core.entity.MeetingTechEntity;
 import com.josh.joinus.storage.db.core.persistence.MeetingJpaRepository;
 import com.josh.joinus.storage.db.core.persistence.MeetingTechJpaRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Transactional
 class MeetingEntityRepositoryTest extends CoreDbContextTest {
     @Autowired
     MeetingTechEntityRepository meetingTechEntityRepository;
@@ -76,12 +78,10 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
         meetingTechEntityRepository.create(savedMeeting2.getId(), List.of(springBoot.getId(), mySql.getId(), react.getId()));
 
         //when
-        List<MeetingTechEntity> all = meetingTechJpaRepository.findAll();
-        System.out.println("all = " + all);
-
         List<Meeting> meetingList = meetingEntityRepository.searchByCondition(condition);
-        System.out.println("meetingList = " + meetingList);
-        //then
 
+        //then
+//        Assertions.assertThat(meetingList).hasSize(2)
+//                .extracting("")
     }
 }

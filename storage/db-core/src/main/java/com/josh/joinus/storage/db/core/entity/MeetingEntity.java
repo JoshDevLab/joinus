@@ -35,6 +35,10 @@ public class MeetingEntity extends BaseEntity {
                 fetch = FetchType.LAZY)
     private List<MeetingTechEntity> meetingTechEntityList = new ArrayList<>();
 
+    public void addMeetingTechEntity(MeetingTechEntity meetingTechEntity) {
+        this.meetingTechEntityList.add(meetingTechEntity);
+    }
+
     public static MeetingEntity create(MeetingCreate meetingCreate) {
         return MeetingEntity.builder()
                 .leaderUserId(meetingCreate.getLeaderUserId())

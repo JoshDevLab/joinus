@@ -3,10 +3,12 @@ package com.josh.joinus.storage.db.core.entity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "meeting_tech")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MeetingTechEntity {
 

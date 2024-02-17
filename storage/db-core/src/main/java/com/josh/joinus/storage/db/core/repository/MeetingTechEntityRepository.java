@@ -29,7 +29,8 @@ public class MeetingTechEntityRepository implements MeetingTechRepository {
         List<TechEntity> techEntityList = techJpaRepository.findByIdIn(techIdList);
 
         techEntityList.forEach(techEntity -> {
-            meetingTechJpaRepository.save(MeetingTechEntity.create(meetingEntity, techEntity));
+            MeetingTechEntity savedMeetingTechEntity = meetingTechJpaRepository.save(MeetingTechEntity.create(meetingEntity, techEntity));
+            meetingEntity.addMeetingTechEntity(savedMeetingTechEntity);
         });
     }
 }
