@@ -5,6 +5,7 @@ import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.storage.db.core.entity.*;
 import com.josh.joinus.storage.db.core.persistence.MeetingJpaRepository;
 import com.josh.joinus.storage.db.core.persistence.MeetingTechJpaRepository;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,6 @@ public class MeetingEntityRepository implements MeetingRepository {
     private final MeetingJpaRepository meetingJpaRepository;
     private final JPAQueryFactory queryFactory;
 
-    //
-    private final MeetingTechJpaRepository meetingTechJpaRepository;
-
     @Override
     public Meeting create(MeetingCreate meetingCreate) {
         return meetingJpaRepository.save(MeetingEntity.create(meetingCreate)).toDomain();
@@ -41,22 +39,33 @@ public class MeetingEntityRepository implements MeetingRepository {
                 .from(meetingEntity)
                 .join(meetingEntity.meetingTechEntityList, meetingTechEntity).fetchJoin()
                 .join(meetingTechEntity.techEntity, techEntity).fetchJoin()
-//                .where(
-//                        searchMeetingType(meetingSearchCondition.getMeetingType()),
-//                        searchTech(meetingSearchCondition.getTechList())
-//                )
+                .where(
+                        searchMeetingType(meetingSearchCondition.getMeetingType()),
+                        searchTech(meetingSearchCondition.getTechList()),
+                        searchPosition(meetingSearchCondition.getPosition()),
+                        searchProcessWqy(meetingSearchCondition.getProcessWay()),
+                        searchMeetingStatus(meetingSearchCondition.getMeetingStatus())
+                )
                 .fetch();
 
-        return meetingEntityList.stream().map(MeetingEntity::toDomain).collect(Collectors.toList());
-
-
-//        List<MeetingEntity> meetingEntityList = meetingJpaRepository.findByCondition();
-//        return meetingEntityList.stream().map(MeetingEntity::toDomain).collect(Collectors.toList());
+        return meetingEntityList.stream().map(MeetingEntity::toDomainBySearch).collect(Collectors.toList());
     }
 
-//    private BooleanExpression searchTech(List<Tech> techList) {
-//        return techList.isEmpty() ? null : meetingEntity.eq(meetingType);
-//    }
+    private BooleanExpression searchMeetingStatus(MeetingStatus meetingStatus) {
+        return meetingStatus == null ? null : meetingEntity.meetingStatus.eq(MeetingStatus.RECRUITING);
+    }
+
+    private BooleanExpression searchProcessWqy(ProcessWay processWay) {
+        return processWay == null ? null : meetingEntity.processWay.eq(processWay);
+    }
+
+    private BooleanExpression searchPosition(Position position) {
+        return position == null ? null : meetingEntity.positions.contains(position);
+    }
+
+    private BooleanExpression searchTech(List<Tech> techList) {
+        return techList == null ? null : techEntity.id.in(techList.stream().map(Tech::getId).toList());
+    }
 
     private BooleanExpression searchMeetingType(MeetingType meetingType) {
         return meetingType == null ? null : meetingEntity.meetingType.eq(meetingType);
