@@ -51,6 +51,10 @@ public class MeetingEntity extends BaseEntity {
                 fetch = FetchType.LAZY)
     private List<MeetingTechEntity> meetingTechEntityList = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "positionEntity",
+            fetch = FetchType.LAZY)
+    private List<MeetingPositionEntity> positionEntityList  = new ArrayList<>();
+
     public void addMeetingTechEntity(MeetingTechEntity meetingTechEntity) {
         this.meetingTechEntityList.add(meetingTechEntity);
     }
