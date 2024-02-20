@@ -14,8 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 public class MeetingSearchCondition {
     private MeetingType meetingType;
-    private List<Tech> techList;
-    private Position position;
+    private List<Long> techIdList;
+    private Long positionId;
     private ProcessWay processWay;
     private MeetingStatus meetingStatus;
 

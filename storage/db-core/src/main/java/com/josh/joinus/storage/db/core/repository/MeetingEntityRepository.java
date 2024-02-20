@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.josh.joinus.storage.db.core.entity.QMeetingEntity.meetingEntity;
+import static com.josh.joinus.storage.db.core.entity.QMeetingPositionEntity.meetingPositionEntity;
 import static com.josh.joinus.storage.db.core.entity.QMeetingTechEntity.meetingTechEntity;
+import static com.josh.joinus.storage.db.core.entity.QPositionEntity.positionEntity;
 import static com.josh.joinus.storage.db.core.entity.QTechEntity.techEntity;
 
 @Repository
@@ -38,11 +40,13 @@ public class MeetingEntityRepository implements MeetingRepository {
                 .select(meetingEntity)
                 .from(meetingEntity)
                 .join(meetingEntity.meetingTechEntityList, meetingTechEntity).fetchJoin()
-                .join(meetingTechEntity.techEntity, techEntity).fetchJoin()
+                .join(meetingTechEntity.techEntity, techEntity)
+                .join(meetingEntity.meetingPositionEntityList, meetingPositionEntity).fetchJoin()
+                .join(meetingPositionEntity.positionEntity, positionEntity)
                 .where(
                         searchMeetingType(meetingSearchCondition.getMeetingType()),
-                        searchTech(meetingSearchCondition.getTechList()),
-                        searchPosition(meetingSearchCondition.getPosition()),
+                        searchTech(meetingSearchCondition.getTechIdList()),
+                        searchPosition(meetingSearchCondition.getPositionId()),
                         searchProcessWqy(meetingSearchCondition.getProcessWay()),
                         searchMeetingStatus(meetingSearchCondition.getMeetingStatus())
                 )
@@ -59,12 +63,12 @@ public class MeetingEntityRepository implements MeetingRepository {
         return processWay == null ? null : meetingEntity.processWay.eq(processWay);
     }
 
-    private BooleanExpression searchPosition(Position position) {
-        return position == null ? null : meetingEntity.positions.contains(position);
+    private BooleanExpression searchPosition(Long positionId) {
+        return positionId == null ? null : positionEntity.id.eq(positionId);
     }
 
-    private BooleanExpression searchTech(List<Tech> techList) {
-        return techList == null ? null : techEntity.id.in(techList.stream().map(Tech::getId).toList());
+    private BooleanExpression searchTech(List<Long> techIdList) {
+        return techIdList == null ? null : techEntity.id.in(techIdList);
     }
 
     private BooleanExpression searchMeetingType(MeetingType meetingType) {
