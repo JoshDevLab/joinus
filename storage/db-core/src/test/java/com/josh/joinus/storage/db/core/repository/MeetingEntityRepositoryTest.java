@@ -4,9 +4,12 @@ import com.josh.joinus.core.domain.*;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.storage.db.core.CoreDbContextTest;
 import com.josh.joinus.storage.db.core.entity.MeetingEntity;
+import com.josh.joinus.storage.db.core.entity.MeetingPositionEntity;
 import com.josh.joinus.storage.db.core.entity.MeetingTechEntity;
+import com.josh.joinus.storage.db.core.entity.PositionEntity;
 import com.josh.joinus.storage.db.core.persistence.MeetingJpaRepository;
 import com.josh.joinus.storage.db.core.persistence.MeetingTechJpaRepository;
+import com.josh.joinus.storage.db.core.persistence.PositionJpaRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,9 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
     @Autowired
     MeetingEntityRepository meetingEntityRepository;
 
+    @Autowired
+    PositionJpaRepository positionJpaRepository;
+
     @Test
     void search() {
         //given
@@ -45,6 +51,8 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
         Tech springBoot = techEntityRepository.add("Spring Boot");
         Tech mySql = techEntityRepository.add("MySql");
         Tech react = techEntityRepository.add("React");
+
+        positionJpaRepository.saveAll(List.of(PositionEntity.bui))
 
         MeetingCreate testMeeting = MeetingCreate.builder()
                 .meetingStatus(MeetingStatus.RECRUITING)
@@ -78,6 +86,7 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
         meetingTechEntityRepository.create(savedMeeting2.getId(), List.of(springBoot.getId(), mySql.getId(), react.getId()));
 
         //when
+        meetingEntityRepository.findByMeetingTechPositionByMeetingIds(List.of(1L, 2L));
         List<Meeting> meetingList = meetingEntityRepository.searchByCondition(condition);
 
         //then

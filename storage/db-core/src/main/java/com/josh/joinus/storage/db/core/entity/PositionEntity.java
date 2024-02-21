@@ -1,6 +1,7 @@
 package com.josh.joinus.storage.db.core.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 @Entity
 @Table(name = "position")
@@ -10,4 +11,6 @@ public class PositionEntity {
     private Long id;
 
     private String name;
+
+
 }
