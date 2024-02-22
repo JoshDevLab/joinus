@@ -1,7 +1,6 @@
 package com.josh.joinus.storage.db.core.entity;
 
 import com.josh.joinus.core.domain.*;
-import com.josh.joinus.storage.db.core.PositionConverter;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -35,11 +34,6 @@ public class MeetingEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private MeetingStatus meetingStatus;
-
-    @Enumerated(EnumType.STRING)
-    @Convert(converter = PositionConverter.class)
-    @Lob
-    private EnumSet<Position> positions;
 
     private LocalDateTime startDateTime;
 
@@ -84,7 +78,6 @@ public class MeetingEntity extends BaseEntity {
         this.meetingType = meetingType;
         this.processWay = processWay;
         this.meetingStatus = meetingStatus;
-        this.positions = positions;
         this.startDateTime = startDateTime;
         this.headCount = headCount;
         this.expiredDateTime = expiredDateTime;
@@ -98,7 +91,6 @@ public class MeetingEntity extends BaseEntity {
                .meetingType(meetingType)
                .processWay(processWay)
                .meetingStatus(meetingStatus)
-               .positions(positions)
                .startDateTime(startDateTime)
                .headCount(headCount)
                .expiredDateTime(expiredDateTime)
@@ -119,7 +111,6 @@ public class MeetingEntity extends BaseEntity {
                 .techNames(meetingTechEntityList.stream().map(
                         meetingTechEntity -> meetingTechEntity.getTechEntity().getName()
                         ).collect(Collectors.toList()))
-                .positions(positions)
                 .build();
     }
 }
