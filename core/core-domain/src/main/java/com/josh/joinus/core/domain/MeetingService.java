@@ -1,6 +1,7 @@
 package com.josh.joinus.core.domain;
 
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
+import com.josh.joinus.core.dto.response.MeetingResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,7 @@ public class MeetingService {
         return meeting;
     }
 
-//    public List<Meeting> search(MeetingSearchCondition condition) {
-//        //List<Meeting> meeting = meetingReader.searchByCondition(condition);
-//        //return meeting;
-//    }
+    public List<MeetingResponse> search(MeetingSearchCondition condition) {
+        return meetingReader.search(condition);
+    }
 }

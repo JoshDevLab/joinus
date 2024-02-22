@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 @Getter
@@ -21,19 +20,19 @@ public class MeetingCreate {
     private LocalDateTime startDateTime;
     private int headCount;
     private LocalDateTime expiredDateTime;
-    private EnumSet<Position> positions;
+    private List<Long> positionList;
 
     @Builder
     private MeetingCreate(Long leaderUserId, String meetingName, MeetingType meetingType, ProcessWay processWay,
                          MeetingStatus meetingStatus, LocalDateTime startDateTime,
-                         int headCount, LocalDateTime expiredDateTime, EnumSet<Position> positions)
+                         int headCount, LocalDateTime expiredDateTime, List<Long> positionList)
     {
         this.leaderUserId = leaderUserId;
         this.meetingName = meetingName;
         this.meetingType = meetingType;
         this.processWay = processWay;
         this.meetingStatus = meetingStatus;
-        this.positions = positions;
+        this.positionList = positionList;
         this.startDateTime = startDateTime;
         this.headCount = headCount;
         this.expiredDateTime = expiredDateTime;

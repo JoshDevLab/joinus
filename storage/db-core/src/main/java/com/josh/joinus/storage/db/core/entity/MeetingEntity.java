@@ -53,6 +53,10 @@ public class MeetingEntity extends BaseEntity {
         this.meetingTechEntityList.add(meetingTechEntity);
     }
 
+    public void addMeetingPositionEntity(MeetingPositionEntity meetingPositionEntity) {
+        this.meetingPositionEntityList.add(meetingPositionEntity);
+    }
+
     public static MeetingEntity create(MeetingCreate meetingCreate) {
         return MeetingEntity.builder()
                 .leaderUserId(meetingCreate.getLeaderUserId())
@@ -60,7 +64,6 @@ public class MeetingEntity extends BaseEntity {
                 .meetingType(meetingCreate.getMeetingType())
                 .processWay(meetingCreate.getProcessWay())
                 .meetingStatus(meetingCreate.getMeetingStatus())
-                .positions(meetingCreate.getPositions())
                 .startDateTime(meetingCreate.getStartDateTime())
                 .headCount(meetingCreate.getHeadCount())
                 .expiredDateTime(meetingCreate.getExpiredDateTime())
@@ -70,8 +73,7 @@ public class MeetingEntity extends BaseEntity {
     @Builder
     public MeetingEntity(Long leaderUserId, String meetingName, MeetingType meetingType,
                          ProcessWay processWay, MeetingStatus meetingStatus,
-                         LocalDateTime startDateTime, int headCount, LocalDateTime expiredDateTime,
-                         EnumSet<Position> positions)
+                         LocalDateTime startDateTime, int headCount, LocalDateTime expiredDateTime)
     {
         this.leaderUserId = leaderUserId;
         this.meetingName = meetingName;
@@ -113,4 +115,5 @@ public class MeetingEntity extends BaseEntity {
                         ).collect(Collectors.toList()))
                 .build();
     }
+
 }

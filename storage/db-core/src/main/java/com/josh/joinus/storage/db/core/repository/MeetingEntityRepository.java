@@ -2,7 +2,10 @@ package com.josh.joinus.storage.db.core.repository;
 
 import com.josh.joinus.core.domain.*;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
-import com.josh.joinus.storage.db.core.dto.MeetingTechPositionDto;
+import com.josh.joinus.core.dto.response.MeetingPositionDto;
+import com.josh.joinus.core.dto.response.MeetingTechDto;
+import com.josh.joinus.storage.db.core.dto.MeetingPositionEntityDto;
+import com.josh.joinus.storage.db.core.dto.MeetingTechEntityDto;
 import com.josh.joinus.storage.db.core.entity.*;
 import com.josh.joinus.storage.db.core.persistence.MeetingJpaRepository;
 import com.querydsl.core.types.Projections;
@@ -35,23 +38,6 @@ public class MeetingEntityRepository implements MeetingRepository {
 
     @Override
     public List<Meeting> searchByCondition(MeetingSearchCondition meetingSearchCondition) {
-        queryFactory
-                .select(
-                        Projections.constructor(
-                                MeetingTechPositionDto.class,
-                                meetingTechEntity.meetingEntity.id,
-                                meetingTechEntity.techEntity,
-                                meetingPositionEntity.positionEntity.name
-                        )
-                )
-                .from(meetingTechEntity)
-                .leftJoin(meetingPositionEntity)
-                .on(meetingTechEntity.meetingEntity.eq(meetingPositionEntity.meetingEntity))
-                .join(meetingTechEntity.techEntity, techEntity).fetchJoin()
-                .join(meetingPositionEntity.positionEntity, positionEntity).fetchJoin()
-                .where(meetingTechEntity.meetingEntity.id.in(List.of(1L, 2L)))
-                .fetch();
-
         List<MeetingEntity> meetingEntityList = queryFactory
                 .select(meetingEntity)
                 .from(meetingEntity)
@@ -73,47 +59,46 @@ public class MeetingEntityRepository implements MeetingRepository {
                 .fetch();
         return meetingEntityList.stream().map(MeetingEntity::toDomainBySearch).collect(Collectors.toList());
 
-//        List<MeetingEntity> meetingEntityList = queryFactory
-//                .select(meetingEntity)
-//                .from(meetingEntity)
-//                .join(meetingEntity.meetingTechEntityList, meetingTechEntity).fetchJoin()
-//                .join(meetingTechEntity.techEntity, techEntity)
-//                .join(meetingEntity.meetingPositionEntityList, meetingPositionEntity).fetchJoin()
-//                .join(meetingPositionEntity.positionEntity, positionEntity)
-//                .where(
-//                        searchMeetingType(meetingSearchCondition.getMeetingType()),
-//                        searchTech(meetingSearchCondition.getTechIdList()),
-//                        searchPosition(meetingSearchCondition.getPositionId()),
-//                        searchProcessWqy(meetingSearchCondition.getProcessWay()),
-//                        searchMeetingStatus(meetingSearchCondition.getMeetingStatus())
-//                )
-//                .fetch();
-//
-//        return meetingEntityList.stream().map(MeetingEntity::toDomainBySearch).collect(Collectors.toList());
     }
 
-    public List<MeetingTechPositionDto> findByMeetingTechPositionByMeetingIds(List<Long> meetingIds) {
-        List<MeetingTechPositionDto> data = queryFactory
+    @Override
+    public List<MeetingTechDto> findByMeetingTechByMeetingIds(List<Long> meetingIds) {
+        List<MeetingTechEntityDto> data = queryFactory
                 .select(
                         Projections.constructor(
-                                MeetingTechPositionDto.class,
+                                MeetingTechEntityDto.class,
                                 meetingTechEntity.meetingEntity.id,
-                                meetingTechEntity.techEntity,
-                                meetingPositionEntity.positionEntity.name
+                                meetingTechEntity.techEntity
                         )
                 )
                 .from(meetingTechEntity)
-                .leftJoin(meetingPositionEntity)
-                .on(meetingTechEntity.meetingEntity.eq(meetingPositionEntity.meetingEntity))
-                .join(meetingTechEntity.techEntity, techEntity).fetchJoin()
-                .join(meetingPositionEntity.positionEntity, positionEntity).fetchJoin()
-                .where(meetingTechEntity.meetingEntity.id.in(List.of(1L, 2L)))
+                .join(meetingTechEntity.techEntity, techEntity)
+                .where(meetingTechEntity.meetingEntity.id.in(meetingIds))
                 .fetch();
 
-        data.forEach(p -> p.getTechEntity().toDomain());
 
-        return data;
+        return data.stream().map(MeetingTechEntityDto::toDomain).collect(Collectors.toList());
     }
+
+    @Override
+    public List<MeetingPositionDto> findByMeetingPositionByMeetingIds(List<Long> meetingIds) {
+        List<MeetingPositionEntityDto> data = queryFactory
+                .select(
+                        Projections.constructor(
+                                MeetingPositionEntityDto.class,
+                                meetingPositionEntity.meetingEntity.id,
+                                positionEntity.name
+                        )
+                )
+                .from(meetingPositionEntity)
+                .join(meetingPositionEntity.positionEntity, positionEntity)
+                .where(meetingPositionEntity.meetingEntity.id.in(meetingIds))
+                .fetch();
+
+
+        return data.stream().map(MeetingPositionEntityDto::toDomain).collect(Collectors.toList());
+    }
+
 
     private BooleanExpression searchMeetingStatus(MeetingStatus meetingStatus) {
         return meetingStatus == null ? null : meetingEntity.meetingStatus.eq(MeetingStatus.RECRUITING);
