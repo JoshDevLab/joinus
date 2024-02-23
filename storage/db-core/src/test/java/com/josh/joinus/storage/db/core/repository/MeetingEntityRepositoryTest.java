@@ -2,65 +2,93 @@ package com.josh.joinus.storage.db.core.repository;
 
 import com.josh.joinus.core.domain.*;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
-import com.josh.joinus.core.dto.response.MeetingTechDto;
 import com.josh.joinus.storage.db.core.CoreDbContextTest;
-import com.josh.joinus.storage.db.core.entity.MeetingEntity;
-import com.josh.joinus.storage.db.core.entity.MeetingPositionEntity;
-import com.josh.joinus.storage.db.core.entity.MeetingTechEntity;
-import com.josh.joinus.storage.db.core.entity.PositionEntity;
+import com.josh.joinus.storage.db.core.entity.*;
 import com.josh.joinus.storage.db.core.persistence.MeetingJpaRepository;
-import com.josh.joinus.storage.db.core.persistence.MeetingTechJpaRepository;
 import com.josh.joinus.storage.db.core.persistence.PositionJpaRepository;
+import com.josh.joinus.storage.db.core.persistence.TechJpaRepository;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.groups.Tuple;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 class MeetingEntityRepositoryTest extends CoreDbContextTest {
-    @Autowired
-    MeetingTechEntityRepository meetingTechEntityRepository;
-
-    @Autowired
-    MeetingTechJpaRepository meetingTechJpaRepository;
-
-    @Autowired
-    TechEntityRepository techEntityRepository;
-
-    @Autowired
-    UserEntityRepository userEntityRepository;
-
-    @Autowired
-    MeetingJpaRepository meetingJpaRepository;
 
     @Autowired
     MeetingEntityRepository meetingEntityRepository;
 
     @Autowired
-    PositionJpaRepository positionJpaRepository;
+    MeetingTechEntityRepository meetingTechEntityRepository;
 
     @Autowired
     MeetingPositionEntityRepository meetingPositionEntityRepository;
 
-    @Test
-    void search() {
-        //given
-        MeetingSearchCondition condition = new MeetingSearchCondition();
+    @Autowired
+    MeetingJpaRepository meetingJpaRepository;
 
-        Tech springBoot = techEntityRepository.add("Spring Boot");
-        Tech mySql = techEntityRepository.add("MySql");
-        Tech react = techEntityRepository.add("React");
+    @Autowired
+    PositionJpaRepository positionJpaRepository;
+
+    @Autowired
+    TechJpaRepository techJpaRepository;
+
+    @DisplayName("모임을 생성할 수 있다.")
+    @Test
+    void create() {
+        //given
+        MeetingCreate testMeeting = MeetingCreate.builder()
+                .leaderUserId(1L)
+                .meetingStatus(MeetingStatus.RECRUITING)
+                .meetingName("test meeting")
+                .meetingType(MeetingType.PROJECT)
+                .expiredDateTime(
+                        LocalDateTime.of(2024, 2, 13, 12, 00, 00)
+                )
+                .headCount(5)
+                .processWay(ProcessWay.ONOFFLINE)
+                .build();
+
+
+        //when
+        Meeting result = meetingEntityRepository.create(testMeeting);
+
+        //then
+        assertThat(result.getLeaderUserId()).isEqualTo(1L);
+        assertThat(result.getMeetingStatus()).isEqualTo(MeetingStatus.RECRUITING);
+        assertThat(result.getMeetingName()).isEqualTo("test meeting");
+        assertThat(result.getMeetingType()).isEqualTo(MeetingType.PROJECT);
+        assertThat(result.getExpiredDateTime())
+                .isEqualTo(
+                        LocalDateTime.of(2024, 2, 13, 12, 00, 00)
+                );
+        assertThat(result.getHeadCount()).isEqualTo(5);
+        assertThat(result.getProcessWay()).isEqualTo(ProcessWay.ONOFFLINE);
+
+    }
+
+    @Test
+    void searchByCondition() {
+        //given
+        TechEntity springBoot = techJpaRepository.save(TechEntity.builder().name("Spring Boot").build());
+        TechEntity mySql = techJpaRepository.save(TechEntity.builder().name("MySql").build());
+        TechEntity react = techJpaRepository.save(TechEntity.builder().name("React").build());
 
         PositionEntity backEnd = positionJpaRepository.save(new PositionEntity("BACK_END"));
         PositionEntity frontEnd = positionJpaRepository.save(new PositionEntity("FRONT_END"));
         PositionEntity designer = positionJpaRepository.save(new PositionEntity("DESIGNER"));
+
+        MeetingSearchCondition recruitingSearch = MeetingSearchCondition.builder()
+                .meetingStatus(MeetingStatus.RECRUITING)
+                .build();
 
         MeetingCreate testMeeting = MeetingCreate.builder()
                 .meetingStatus(MeetingStatus.RECRUITING)
@@ -100,17 +128,24 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
                                                                             frontEnd.getId()));
 
         //when
-        List<MeetingTechDto> byMeetingTechByMeetingIds =
-                meetingEntityRepository.findByMeetingTechByMeetingIds(List.of(meetingEntity.getId(),
-                                                                                meetingEntity2.getId()));
+        List<Meeting> meetingList = meetingEntityRepository.searchByCondition(recruitingSearch);
 
-        System.out.println("byMeetingTechByMeetingIds = " + byMeetingTechByMeetingIds);
-
-        Map<Long, List<MeetingTechDto>> collect =
-                byMeetingTechByMeetingIds.stream().collect(Collectors.groupingBy(MeetingTechDto::getMeetingId));
-        System.out.println("collect = " + collect);
         //then
-//        Assertions.assertThat(meetingList).hasSize(2)
-//                .extracting("")
+        Assertions.assertThat(meetingList).hasSize(2)
+                .extracting("meetingStatus", "meetingName", "meetingType", "processWay"
+                            , "expiredDateTime", "headCount")
+                .containsExactlyInAnyOrder(
+                        Tuple.tuple(MeetingStatus.RECRUITING, "test meeting", MeetingType.PROJECT,
+                                ProcessWay.ONOFFLINE,
+                                LocalDateTime.of(2024, 2, 13, 12, 00, 00),
+                                5
+                                ),
+                        Tuple.tuple(MeetingStatus.RECRUITING, "test meeting2", MeetingType.STUDY,
+                                ProcessWay.ONOFFLINE,
+                                LocalDateTime.of(2024, 2, 15, 12, 00, 00),
+                                7
+                                )
+                );
+
     }
 }

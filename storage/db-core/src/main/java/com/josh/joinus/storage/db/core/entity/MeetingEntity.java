@@ -110,9 +110,6 @@ public class MeetingEntity extends BaseEntity {
                 .startDateTime(startDateTime)
                 .headCount(headCount)
                 .expiredDateTime(expiredDateTime)
-                .techNames(meetingTechEntityList.stream().map(
-                        meetingTechEntity -> meetingTechEntity.getTechEntity().getName()
-                        ).collect(Collectors.toList()))
                 .build();
     }
 

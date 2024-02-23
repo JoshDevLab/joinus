@@ -12,4 +12,5 @@ public class MeetingPositionDto {
         this.meetingId = meetingId;
         this.positionName = positionName;
     }
+
 }
