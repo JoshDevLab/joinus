@@ -2,6 +2,7 @@ package com.josh.joinus.storage.db.core.repository;
 
 import com.josh.joinus.core.domain.*;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
+import com.josh.joinus.core.dto.response.MeetingTechDto;
 import com.josh.joinus.storage.db.core.CoreDbContextTest;
 import com.josh.joinus.storage.db.core.entity.*;
 import com.josh.joinus.storage.db.core.persistence.MeetingJpaRepository;
@@ -75,6 +76,7 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
 
     }
 
+    @DisplayName("MeetingSearchCondition에 따라 필터링된 모임들을 가져온다.")
     @Test
     void searchByCondition() {
         //given
@@ -147,5 +149,46 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
                                 )
                 );
 
+    }
+
+    @DisplayName("특정 meetingId의 기술스택들을 가져온다.")
+    @Test
+    void findByMeetingTechByMeetingIds() {
+        //given
+        TechEntity springBoot = techJpaRepository.save(TechEntity.builder().name("Spring Boot").build());
+        TechEntity mySql = techJpaRepository.save(TechEntity.builder().name("MySql").build());
+        TechEntity react = techJpaRepository.save(TechEntity.builder().name("React").build());
+
+        PositionEntity backEnd = positionJpaRepository.save(new PositionEntity("BACK_END"));
+        PositionEntity frontEnd = positionJpaRepository.save(new PositionEntity("FRONT_END"));
+        PositionEntity designer = positionJpaRepository.save(new PositionEntity("DESIGNER"));
+
+        MeetingSearchCondition recruitingSearch = MeetingSearchCondition.builder()
+                .meetingStatus(MeetingStatus.RECRUITING)
+                .build();
+
+        MeetingCreate testMeeting = MeetingCreate.builder()
+                .meetingStatus(MeetingStatus.RECRUITING)
+                .meetingName("test meeting")
+                .meetingType(MeetingType.PROJECT)
+                .expiredDateTime(
+                        LocalDateTime.of(2024, 2, 13, 12, 00, 00)
+                )
+                .headCount(5)
+                .processWay(ProcessWay.ONOFFLINE)
+                .build();
+
+        MeetingEntity meetingEntity = MeetingEntity.create(testMeeting);
+        MeetingEntity savedMeeting = meetingJpaRepository.save(meetingEntity);
+        meetingTechEntityRepository.create(savedMeeting.getId(), List.of(springBoot.getId(), mySql.getId()));
+        meetingPositionEntityRepository.create(savedMeeting.getId(), List.of(backEnd.getId(),
+                frontEnd.getId(),
+                designer.getId()));
+
+        //when
+        List<MeetingTechDto> techList = meetingEntityRepository.findByMeetingTechByMeetingIds(List.of(savedMeeting.getId()));
+
+        //then
+        Assertions.assertThat(techList).hasSize(2);
     }
 }
