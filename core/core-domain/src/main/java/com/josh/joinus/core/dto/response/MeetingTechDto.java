@@ -1,15 +1,24 @@
 package com.josh.joinus.core.dto.response;
 
 import com.josh.joinus.core.domain.Tech;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class MeetingTechDto {
     private Long meetingId;
-    private Tech tech;
+    private String techName;
+    private String techImg;
 
-    public MeetingTechDto(Long meetingId, Tech tech) {
+    public MeetingTechDto(Long meetingId, String techName, String techImg) {
         this.meetingId = meetingId;
-        this.tech = tech;
+        this.techName = techName;
+        this.techImg = techImg;
+    }
+
+    @Builder
+    public MeetingTechDto(String techName, String techImg) {
+        this.techName = techName;
+        this.techImg = techImg;
     }
 }

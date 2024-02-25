@@ -11,7 +11,7 @@ import java.util.List;
 public class MeetingResponse {
     private Long meetingId;
     private String meetingName;
-    private List<Tech> techList;
+    private List<MeetingTechDto> techList;
     private List<String> positionList;
     private LocalDateTime expiredDate;
     private String userName;
@@ -19,7 +19,7 @@ public class MeetingResponse {
     private int reviewCount;
 
     @Builder
-    public MeetingResponse(Long meetingId, String meetingName, List<Tech> techList, List<String> positionList,
+    public MeetingResponse(Long meetingId, String meetingName, List<MeetingTechDto> techList, List<String> positionList,
                            LocalDateTime expiredDate, String userName, int views, int reviewCount)
     {
         this.meetingId = meetingId;

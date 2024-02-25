@@ -15,6 +15,6 @@ public class MeetingTechEntityDto {
     private TechEntity techEntity;
 
     public MeetingTechDto toDomain() {
-        return new MeetingTechDto(this.meetingId, this.techEntity.toDomain());
+        return new MeetingTechDto(this.meetingId, this.techEntity.getName(), this.getTechEntity().getTechImg());
     }
 }

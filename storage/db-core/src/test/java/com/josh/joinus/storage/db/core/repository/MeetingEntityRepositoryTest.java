@@ -2,6 +2,7 @@ package com.josh.joinus.storage.db.core.repository;
 
 import com.josh.joinus.core.domain.*;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
+import com.josh.joinus.core.dto.response.MeetingPositionDto;
 import com.josh.joinus.core.dto.response.MeetingTechDto;
 import com.josh.joinus.storage.db.core.CoreDbContextTest;
 import com.josh.joinus.storage.db.core.entity.*;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.groups.Tuple.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
@@ -137,12 +139,12 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
                 .extracting("meetingStatus", "meetingName", "meetingType", "processWay"
                             , "expiredDateTime", "headCount")
                 .containsExactlyInAnyOrder(
-                        Tuple.tuple(MeetingStatus.RECRUITING, "test meeting", MeetingType.PROJECT,
+                        tuple(MeetingStatus.RECRUITING, "test meeting", MeetingType.PROJECT,
                                 ProcessWay.ONOFFLINE,
                                 LocalDateTime.of(2024, 2, 13, 12, 00, 00),
                                 5
                                 ),
-                        Tuple.tuple(MeetingStatus.RECRUITING, "test meeting2", MeetingType.STUDY,
+                        tuple(MeetingStatus.RECRUITING, "test meeting2", MeetingType.STUDY,
                                 ProcessWay.ONOFFLINE,
                                 LocalDateTime.of(2024, 2, 15, 12, 00, 00),
                                 7
@@ -159,14 +161,6 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
         TechEntity mySql = techJpaRepository.save(TechEntity.builder().name("MySql").build());
         TechEntity react = techJpaRepository.save(TechEntity.builder().name("React").build());
 
-        PositionEntity backEnd = positionJpaRepository.save(new PositionEntity("BACK_END"));
-        PositionEntity frontEnd = positionJpaRepository.save(new PositionEntity("FRONT_END"));
-        PositionEntity designer = positionJpaRepository.save(new PositionEntity("DESIGNER"));
-
-        MeetingSearchCondition recruitingSearch = MeetingSearchCondition.builder()
-                .meetingStatus(MeetingStatus.RECRUITING)
-                .build();
-
         MeetingCreate testMeeting = MeetingCreate.builder()
                 .meetingStatus(MeetingStatus.RECRUITING)
                 .meetingName("test meeting")
@@ -181,14 +175,96 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
         MeetingEntity meetingEntity = MeetingEntity.create(testMeeting);
         MeetingEntity savedMeeting = meetingJpaRepository.save(meetingEntity);
         meetingTechEntityRepository.create(savedMeeting.getId(), List.of(springBoot.getId(), mySql.getId()));
+
+        MeetingCreate testMeeting2 = MeetingCreate.builder()
+                .meetingStatus(MeetingStatus.RECRUITING)
+                .meetingName("test meeting2")
+                .meetingType(MeetingType.STUDY)
+                .expiredDateTime(
+                        LocalDateTime.of(2024, 2, 15, 12, 00, 00)
+                )
+                .headCount(7)
+                .processWay(ProcessWay.ONOFFLINE)
+                .build();
+
+        MeetingEntity meetingEntity2 = MeetingEntity.create(testMeeting2);
+        MeetingEntity savedMeeting2 = meetingJpaRepository.save(meetingEntity2);
+        meetingTechEntityRepository.create(savedMeeting2.getId(), List.of(springBoot.getId(),
+                mySql.getId(),
+                react.getId()));
+
+        //when
+        List<MeetingTechDto> techList = meetingEntityRepository.findByMeetingTechByMeetingIds(
+                List.of(savedMeeting.getId(), savedMeeting2.getId())
+        );
+
+        //then
+        Assertions.assertThat(techList).hasSize(5)
+                .extracting("meetingId", "techName", "techImg")
+                .containsExactlyInAnyOrder(
+                        tuple(savedMeeting.getId(), springBoot.getName(), springBoot.getTechImg()),
+                        tuple(savedMeeting.getId(), mySql.getName(), mySql.getTechImg()),
+                        tuple(savedMeeting2.getId(), springBoot.getName(), springBoot.getTechImg()),
+                        tuple(savedMeeting2.getId(), mySql.getName(), mySql.getTechImg()),
+                        tuple(savedMeeting2.getId(), react.getName(), react.getTechImg())
+                );
+    }
+
+    @DisplayName("meeting id 들의 필요포지션들을 가져온다.")
+    @Test
+    void findByMeetingPositionByMeetingIds() {
+        //given
+        PositionEntity backEnd = positionJpaRepository.save(new PositionEntity("BACK_END"));
+        PositionEntity frontEnd = positionJpaRepository.save(new PositionEntity("FRONT_END"));
+        PositionEntity designer = positionJpaRepository.save(new PositionEntity("DESIGNER"));
+
+        MeetingCreate testMeeting = MeetingCreate.builder()
+                .meetingStatus(MeetingStatus.RECRUITING)
+                .meetingName("test meeting")
+                .meetingType(MeetingType.PROJECT)
+                .expiredDateTime(
+                        LocalDateTime.of(2024, 2, 13, 12, 00, 00)
+                )
+                .headCount(5)
+                .processWay(ProcessWay.ONOFFLINE)
+                .build();
+
+        MeetingEntity meetingEntity = MeetingEntity.create(testMeeting);
+        MeetingEntity savedMeeting = meetingJpaRepository.save(meetingEntity);
         meetingPositionEntityRepository.create(savedMeeting.getId(), List.of(backEnd.getId(),
                 frontEnd.getId(),
                 designer.getId()));
 
+        MeetingCreate testMeeting2 = MeetingCreate.builder()
+                .meetingStatus(MeetingStatus.RECRUITING)
+                .meetingName("test meeting2")
+                .meetingType(MeetingType.STUDY)
+                .expiredDateTime(
+                        LocalDateTime.of(2024, 2, 15, 12, 00, 00)
+                )
+                .headCount(7)
+                .processWay(ProcessWay.ONOFFLINE)
+                .build();
+
+        MeetingEntity meetingEntity2 = MeetingEntity.create(testMeeting2);
+        MeetingEntity savedMeeting2 = meetingJpaRepository.save(meetingEntity2);
+        meetingPositionEntityRepository.create(savedMeeting2.getId(), List.of(backEnd.getId(),
+                frontEnd.getId()));
+
         //when
-        List<MeetingTechDto> techList = meetingEntityRepository.findByMeetingTechByMeetingIds(List.of(savedMeeting.getId()));
+        List<MeetingPositionDto> result =
+                meetingEntityRepository.findByMeetingPositionByMeetingIds(List.of(savedMeeting.getId(), savedMeeting2.getId()));
 
         //then
-        Assertions.assertThat(techList).hasSize(2);
+        Assertions.assertThat(result).hasSize(5)
+                .extracting("meetingId", "positionName")
+                .containsExactlyInAnyOrder(
+                        tuple(savedMeeting.getId(), backEnd.getName()),
+                        tuple(savedMeeting.getId(), frontEnd.getName()),
+                        tuple(savedMeeting.getId(), designer.getName()),
+                        tuple(savedMeeting2.getId(), backEnd.getName()),
+                        tuple(savedMeeting2.getId(), frontEnd.getName())
+                );
+
     }
 }

@@ -40,7 +40,9 @@ public class MeetingReader {
                             .stream().map(MeetingPositionDto::getPositionName).toList()
                         )
                         .techList(meetingTechMap.get(p.getId())
-                            .stream().map(MeetingTechDto::getTech).toList()
+                            .stream().map(tech -> MeetingTechDto.builder()
+                                        .techName(tech.getTechName())
+                                        .techImg(tech.getTechImg()).build()).toList()
                         )
                         .build()
                 ).toList();

@@ -17,6 +17,7 @@ public class TechEntity {
     private Long id;
 
     private String name;
+    private String techImg;
 
     public static TechEntity create(String name) {
         return TechEntity.builder()
