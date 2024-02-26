@@ -3,6 +3,8 @@ package com.josh.joinus.storage.db.core.repository;
 import com.josh.joinus.core.domain.*;
 import com.josh.joinus.core.domain.meeting.Meeting;
 import com.josh.joinus.core.domain.meeting.MeetingCreate;
+import com.josh.joinus.core.domain.meeting.MeetingStatus;
+import com.josh.joinus.core.domain.meeting.MeetingType;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.core.dto.response.MeetingPositionDto;
 import com.josh.joinus.core.dto.response.MeetingTechDto;

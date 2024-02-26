@@ -1,6 +1,5 @@
 package com.josh.joinus.core.domain.meeting;
 
-import com.josh.joinus.core.domain.meeting.MeetingTechRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

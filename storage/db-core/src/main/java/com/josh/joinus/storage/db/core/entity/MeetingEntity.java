@@ -3,6 +3,8 @@ package com.josh.joinus.storage.db.core.entity;
 import com.josh.joinus.core.domain.*;
 import com.josh.joinus.core.domain.meeting.Meeting;
 import com.josh.joinus.core.domain.meeting.MeetingCreate;
+import com.josh.joinus.core.domain.meeting.MeetingStatus;
+import com.josh.joinus.core.domain.meeting.MeetingType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

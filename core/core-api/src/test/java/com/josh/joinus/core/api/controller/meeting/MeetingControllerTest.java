@@ -1,10 +1,11 @@
-package com.josh.joinus.core.api.controller;
+package com.josh.joinus.core.api.controller.meeting;
 
 import com.josh.joinus.core.api.TechRequest;
-import com.josh.joinus.core.api.controller.meeting.MeetingController;
+import com.josh.joinus.core.api.controller.TechController;
 import com.josh.joinus.core.api.dto.meeting.MeetingCreateRequest;
 import com.josh.joinus.core.domain.Tech;
 import com.josh.joinus.core.domain.TechService;
+import com.josh.joinus.core.domain.meeting.MeetingCreate;
 import com.josh.joinus.core.domain.meeting.MeetingService;
 import com.josh.joinus.test.api.RestDocsTest;
 import io.restassured.http.ContentType;
@@ -16,15 +17,15 @@ import org.springframework.restdocs.payload.JsonFieldType;
 
 import static com.josh.joinus.test.api.RestDocsUtils.requestPreprocessor;
 import static com.josh.joinus.test.api.RestDocsUtils.responsePreprocessor;
-import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 
-class TechControllerTest extends RestDocsTest {
+
+class MeetingControllerTest extends RestDocsTest {
 
     private MeetingService meetingService = mock(MeetingService.class);
 
@@ -33,6 +34,12 @@ class TechControllerTest extends RestDocsTest {
         return new MeetingController(meetingService);
     }
 
+
+    @DisplayName("미팅을 생성한다.")
+    @Test
+    void add() {
+
+    }
 
 
 }

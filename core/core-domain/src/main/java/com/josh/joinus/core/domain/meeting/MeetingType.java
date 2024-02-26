@@ -1,4 +1,4 @@
-package com.josh.joinus.core.domain;
+package com.josh.joinus.core.domain.meeting;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

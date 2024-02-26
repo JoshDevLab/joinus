@@ -1,8 +1,6 @@
 package com.josh.joinus.core.domain.meeting;
 
 import com.josh.joinus.core.domain.Base;
-import com.josh.joinus.core.domain.MeetingStatus;
-import com.josh.joinus.core.domain.MeetingType;
 import com.josh.joinus.core.domain.ProcessWay;
 import lombok.Builder;
 import lombok.Getter;

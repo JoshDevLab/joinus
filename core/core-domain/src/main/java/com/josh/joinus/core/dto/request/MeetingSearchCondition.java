@@ -1,6 +1,8 @@
 package com.josh.joinus.core.dto.request;
 
 import com.josh.joinus.core.domain.*;
+import com.josh.joinus.core.domain.meeting.MeetingStatus;
+import com.josh.joinus.core.domain.meeting.MeetingType;
 import lombok.*;
 
 import java.util.List;

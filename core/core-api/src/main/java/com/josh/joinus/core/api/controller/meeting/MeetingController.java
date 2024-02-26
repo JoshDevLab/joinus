@@ -17,7 +17,7 @@ public class MeetingController {
 
     private final MeetingService meetingService;
 
-    @PostMapping("create")
+    @PostMapping
     public ResponseEntity<Long> create(@Valid @RequestBody MeetingCreateRequest meetingCreateRequest) {
         return ResponseEntity.ok(meetingService.create(meetingCreateRequest.toServiceDto()));
     }

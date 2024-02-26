@@ -16,41 +16,22 @@ import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+
 @Tag("restdocs")
 @ExtendWith(RestDocumentationExtension.class)
 public abstract class RestDocsTest {
 
-    protected MockMvcRequestSpecification mockMvc;
-
-    private RestDocumentationContextProvider restDocumentation;
+    protected MockMvc mockMvc;
+    protected ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
-    public void setUp(RestDocumentationContextProvider restDocumentation) {
-        this.restDocumentation = restDocumentation;
+    void setUp(RestDocumentationContextProvider provider) {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
+                .apply(documentationConfiguration(provider))
+                .build();
     }
 
-    protected MockMvcRequestSpecification given() {
-        return mockMvc;
-    }
-
-    protected MockMvcRequestSpecification mockController(Object controller) {
-        MockMvc mockMvc = createMockMvc(controller);
-        return RestAssuredMockMvc.given().mockMvc(mockMvc);
-    }
-
-    private MockMvc createMockMvc(Object controller) {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(objectMapper());
-
-        return MockMvcBuilders.standaloneSetup(controller)
-            .apply(MockMvcRestDocumentation.documentationConfiguration(restDocumentation))
-            .setMessageConverters(converter)
-            .build();
-    }
-
-    private ObjectMapper objectMapper() {
-        return new ObjectMapper().findAndRegisterModules()
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS);
-    }
+    protected abstract Object initController();
 
 }

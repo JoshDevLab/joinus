@@ -1,4 +1,4 @@
-package com.josh.joinus.storage.db.core;
+package com.josh.joinus;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,11 +1,12 @@
 package com.josh.joinus.storage.db.core.dto;
 
 import com.josh.joinus.core.domain.*;
+import com.josh.joinus.core.domain.meeting.MeetingStatus;
+import com.josh.joinus.core.domain.meeting.MeetingType;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.EnumSet;
 import java.util.List;
 
 @Getter

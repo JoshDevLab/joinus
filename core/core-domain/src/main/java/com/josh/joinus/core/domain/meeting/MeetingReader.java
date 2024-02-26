@@ -1,6 +1,5 @@
 package com.josh.joinus.core.domain.meeting;
 
-import com.josh.joinus.core.domain.MeetingType;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.core.dto.response.MeetingPositionDto;
 import com.josh.joinus.core.dto.response.MeetingResponse;

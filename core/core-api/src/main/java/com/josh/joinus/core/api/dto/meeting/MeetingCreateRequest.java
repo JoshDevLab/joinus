@@ -1,22 +1,18 @@
 package com.josh.joinus.core.api.dto.meeting;
 
 import com.josh.joinus.core.domain.meeting.MeetingCreate;
-import com.josh.joinus.core.domain.MeetingType;
+import com.josh.joinus.core.domain.meeting.MeetingType;
 import com.josh.joinus.core.domain.ProcessWay;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class MeetingCreateRequest {
     @NotNull
@@ -63,5 +59,21 @@ public class MeetingCreateRequest {
                 .content(this.content)
                 .expiredDateTime(this.expiredDateTime)
                 .build();
+    }
+
+    @Builder
+    private MeetingCreateRequest(Long leaderUserId, String meetingName, String content, MeetingType meetingType,
+                                List<Long> techIdList, ProcessWay processWay, LocalDateTime startDateTime,
+                                int headCount, List<Long> positionList, LocalDateTime expiredDateTime) {
+        this.leaderUserId = leaderUserId;
+        this.meetingName = meetingName;
+        this.content = content;
+        this.meetingType = meetingType;
+        this.techIdList = techIdList;
+        this.processWay = processWay;
+        this.startDateTime = startDateTime;
+        this.headCount = headCount;
+        this.positionList = positionList;
+        this.expiredDateTime = expiredDateTime;
     }
 }

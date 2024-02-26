@@ -1,4 +1,4 @@
-package com.josh.joinus.core;
+package com.josh.joinus;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

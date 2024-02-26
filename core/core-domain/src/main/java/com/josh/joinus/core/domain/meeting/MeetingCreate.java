@@ -1,13 +1,10 @@
 package com.josh.joinus.core.domain.meeting;
 
-import com.josh.joinus.core.domain.MeetingStatus;
-import com.josh.joinus.core.domain.MeetingType;
 import com.josh.joinus.core.domain.ProcessWay;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
