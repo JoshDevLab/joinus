@@ -1,6 +1,8 @@
 package com.josh.joinus.storage.db.core.entity;
 
 import com.josh.joinus.core.domain.*;
+import com.josh.joinus.core.domain.meeting.Meeting;
+import com.josh.joinus.core.domain.meeting.MeetingCreate;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,9 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "meeting")
@@ -25,6 +25,9 @@ public class MeetingEntity extends BaseEntity {
     private Long leaderUserId;
 
     private String meetingName;
+
+    @Lob
+    private String content;
 
     @Enumerated(EnumType.STRING)
     private MeetingType meetingType;
@@ -61,6 +64,7 @@ public class MeetingEntity extends BaseEntity {
         return MeetingEntity.builder()
                 .leaderUserId(meetingCreate.getLeaderUserId())
                 .meetingName(meetingCreate.getMeetingName())
+                .content(meetingCreate.getContent())
                 .meetingType(meetingCreate.getMeetingType())
                 .processWay(meetingCreate.getProcessWay())
                 .meetingStatus(meetingCreate.getMeetingStatus())
@@ -71,12 +75,13 @@ public class MeetingEntity extends BaseEntity {
     }
 
     @Builder
-    public MeetingEntity(Long leaderUserId, String meetingName, MeetingType meetingType,
+    public MeetingEntity(Long leaderUserId, String meetingName, String content, MeetingType meetingType,
                          ProcessWay processWay, MeetingStatus meetingStatus,
                          LocalDateTime startDateTime, int headCount, LocalDateTime expiredDateTime)
     {
         this.leaderUserId = leaderUserId;
         this.meetingName = meetingName;
+        this.content = content;
         this.meetingType = meetingType;
         this.processWay = processWay;
         this.meetingStatus = meetingStatus;
@@ -90,6 +95,7 @@ public class MeetingEntity extends BaseEntity {
                .id(id)
                .leaderUserId(leaderUserId)
                .meetingName(meetingName)
+               .content(content)
                .meetingType(meetingType)
                .processWay(processWay)
                .meetingStatus(meetingStatus)
@@ -104,6 +110,7 @@ public class MeetingEntity extends BaseEntity {
                 .id(id)
                 .leaderUserId(leaderUserId)
                 .meetingName(meetingName)
+                .content(content)
                 .meetingType(meetingType)
                 .processWay(processWay)
                 .meetingStatus(meetingStatus)

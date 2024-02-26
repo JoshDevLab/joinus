@@ -1,15 +1,16 @@
-package com.josh.joinus.core.domain;
+package com.josh.joinus.core.domain.meeting;
 
+import com.josh.joinus.core.domain.MeetingType;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.core.dto.response.MeetingPositionDto;
 import com.josh.joinus.core.dto.response.MeetingResponse;
 import com.josh.joinus.core.dto.response.MeetingTechDto;
+import com.josh.joinus.core.exception.MultipleMeetingsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -46,5 +47,11 @@ public class MeetingReader {
                         )
                         .build()
                 ).toList();
+    }
+
+    public void findByUserIdDuplicate(Long leaderUserId, MeetingType meetingType) {
+        if (meetingRepository.duplicateLeaderUser(leaderUserId, meetingType)) {
+            throw new MultipleMeetingsException("스터디나 사이드프로젝트 중 하나에 2개 이상의 모임을 만들수 없습니다.");
+        }
     }
 }

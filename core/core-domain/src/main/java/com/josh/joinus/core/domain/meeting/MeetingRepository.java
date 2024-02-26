@@ -1,5 +1,8 @@
-package com.josh.joinus.core.domain;
+package com.josh.joinus.core.domain.meeting;
 
+import com.josh.joinus.core.domain.MeetingType;
+import com.josh.joinus.core.domain.meeting.Meeting;
+import com.josh.joinus.core.domain.meeting.MeetingCreate;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.core.dto.response.MeetingPositionDto;
 import com.josh.joinus.core.dto.response.MeetingTechDto;
@@ -7,8 +10,9 @@ import com.josh.joinus.core.dto.response.MeetingTechDto;
 import java.util.List;
 
 public interface MeetingRepository {
-    Meeting create(MeetingCreate meetingCreate);
+    Long create(MeetingCreate meetingCreate);
     List<Meeting> searchByCondition(MeetingSearchCondition meetingSearchCondition);
     List<MeetingTechDto> findByMeetingTechByMeetingIds(List<Long> meetingIds);
     List<MeetingPositionDto> findByMeetingPositionByMeetingIds(List<Long> meetingIds);
+    boolean duplicateLeaderUser(Long leaderUserId, MeetingType meetingType);
 }

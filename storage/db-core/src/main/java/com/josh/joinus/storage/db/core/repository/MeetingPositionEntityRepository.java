@@ -1,6 +1,6 @@
 package com.josh.joinus.storage.db.core.repository;
 
-import com.josh.joinus.core.domain.MeetingPositionRepository;
+import com.josh.joinus.core.domain.meeting.MeetingPositionRepository;
 import com.josh.joinus.storage.db.core.entity.*;
 import com.josh.joinus.storage.db.core.persistence.MeetingJpaRepository;
 import com.josh.joinus.storage.db.core.persistence.MeetingPositionJpaRepository;

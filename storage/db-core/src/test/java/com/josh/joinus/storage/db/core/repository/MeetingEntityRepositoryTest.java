@@ -1,6 +1,8 @@
 package com.josh.joinus.storage.db.core.repository;
 
 import com.josh.joinus.core.domain.*;
+import com.josh.joinus.core.domain.meeting.Meeting;
+import com.josh.joinus.core.domain.meeting.MeetingCreate;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.core.dto.response.MeetingPositionDto;
 import com.josh.joinus.core.dto.response.MeetingTechDto;
@@ -10,7 +12,6 @@ import com.josh.joinus.storage.db.core.persistence.MeetingJpaRepository;
 import com.josh.joinus.storage.db.core.persistence.PositionJpaRepository;
 import com.josh.joinus.storage.db.core.persistence.TechJpaRepository;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 class MeetingEntityRepositoryTest extends CoreDbContextTest {
@@ -52,6 +52,7 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
                 .leaderUserId(1L)
                 .meetingStatus(MeetingStatus.RECRUITING)
                 .meetingName("test meeting")
+                .content("test content")
                 .meetingType(MeetingType.PROJECT)
                 .expiredDateTime(
                         LocalDateTime.of(2024, 2, 13, 12, 00, 00)
@@ -62,12 +63,14 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
 
 
         //when
-        Meeting result = meetingEntityRepository.create(testMeeting);
+        Long meetingId = meetingEntityRepository.create(testMeeting);
+        MeetingEntity result = meetingJpaRepository.findById(meetingId).get();
 
         //then
         assertThat(result.getLeaderUserId()).isEqualTo(1L);
         assertThat(result.getMeetingStatus()).isEqualTo(MeetingStatus.RECRUITING);
         assertThat(result.getMeetingName()).isEqualTo("test meeting");
+        assertThat(result.getContent()).isEqualTo("test content");
         assertThat(result.getMeetingType()).isEqualTo(MeetingType.PROJECT);
         assertThat(result.getExpiredDateTime())
                 .isEqualTo(

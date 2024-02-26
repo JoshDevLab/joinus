@@ -1,6 +1,6 @@
 package com.josh.joinus.storage.db.core.repository;
 
-import com.josh.joinus.core.domain.MeetingTechRepository;
+import com.josh.joinus.core.domain.meeting.MeetingTechRepository;
 import com.josh.joinus.storage.db.core.entity.MeetingEntity;
 import com.josh.joinus.storage.db.core.entity.MeetingTechEntity;
 import com.josh.joinus.storage.db.core.entity.TechEntity;
@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor

@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/tech")
+@RequestMapping("tech")
 @RequiredArgsConstructor
 public class TechController {
 
     private final TechService techService;
 
-    @PostMapping("/add")
+    @PostMapping("add")
     public ResponseEntity<TechResponse> add(@RequestBody TechRequest techRequest) {
         TechResponse techResponse = TechResponse.create(techService.add(techRequest.getName()));
         return ResponseEntity.ok(techResponse);

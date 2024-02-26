@@ -1,6 +1,9 @@
 package com.josh.joinus.storage.db.core.repository;
 
 import com.josh.joinus.core.domain.*;
+import com.josh.joinus.core.domain.meeting.Meeting;
+import com.josh.joinus.core.domain.meeting.MeetingCreate;
+import com.josh.joinus.core.domain.meeting.MeetingRepository;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.core.dto.response.MeetingPositionDto;
 import com.josh.joinus.core.dto.response.MeetingTechDto;
@@ -32,8 +35,8 @@ public class MeetingEntityRepository implements MeetingRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Meeting create(MeetingCreate meetingCreate) {
-        return meetingJpaRepository.save(MeetingEntity.create(meetingCreate)).toDomain();
+    public Long create(MeetingCreate meetingCreate) {
+        return meetingJpaRepository.save(MeetingEntity.create(meetingCreate)).getId();
     }
 
     @Override
@@ -97,6 +100,16 @@ public class MeetingEntityRepository implements MeetingRepository {
 
 
         return data.stream().map(MeetingPositionEntityDto::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean duplicateLeaderUser(Long leaderUserId, MeetingType meetingType) {
+        List<MeetingEntity> meetingEntityList = queryFactory.selectFrom(meetingEntity)
+                .where(meetingEntity.leaderUserId.eq(leaderUserId),
+                        meetingEntity.meetingType.eq(meetingType))
+                .fetch();
+
+        return !meetingEntityList.isEmpty();
     }
 
 

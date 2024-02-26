@@ -1,6 +1,7 @@
 package com.josh.joinus.storage.db.core.repository;
 
 import com.josh.joinus.core.domain.*;
+import com.josh.joinus.core.domain.meeting.MeetingCreate;
 import com.josh.joinus.storage.db.core.CoreDbContextTest;
 import com.josh.joinus.storage.db.core.entity.MeetingEntity;
 import com.josh.joinus.storage.db.core.entity.MeetingTechEntity;
@@ -8,7 +9,6 @@ import com.josh.joinus.storage.db.core.entity.TechEntity;
 import com.josh.joinus.storage.db.core.persistence.MeetingJpaRepository;
 import com.josh.joinus.storage.db.core.persistence.MeetingTechJpaRepository;
 import com.josh.joinus.storage.db.core.persistence.TechJpaRepository;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,8 +19,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.tuple;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 class MeetingTechEntityRepositoryTest extends CoreDbContextTest {
