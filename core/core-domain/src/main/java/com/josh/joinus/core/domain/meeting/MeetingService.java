@@ -19,16 +19,16 @@ public class MeetingService {
     private final MeetingPositionWriter meetingPositionWriter;
 
     @Transactional
-    public Long create(MeetingCreate meetingCreate) {
+    public Meeting create(MeetingCreate meetingCreate) {
         // validate
         meetingReader.findByUserIdDuplicate(meetingCreate.getLeaderUserId(), meetingCreate.getMeetingType());
 
         // create
-        Long meetingId = meetingWriter.create(meetingCreate);
-        meetingTechWriter.create(meetingId, meetingCreate.getTechIdList());
-        meetingPositionWriter.create(meetingId, meetingCreate.getPositionList());
+        Meeting meeting = meetingWriter.create(meetingCreate);
+        meetingTechWriter.create(meeting.getId(), meetingCreate.getTechIdList());
+        meetingPositionWriter.create(meeting.getId(), meetingCreate.getPositionList());
 
-        return meetingId;
+        return meeting;
     }
 
     public List<MeetingResponse> searchByCondition(MeetingSearchCondition condition) {

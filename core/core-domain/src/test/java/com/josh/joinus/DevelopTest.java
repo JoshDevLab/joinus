@@ -1,12 +1,12 @@
-package com.josh.joinus.core;
+package com.josh.joinus;
 
 import org.junit.jupiter.api.Tag;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestConstructor;
 
-@Tag("context")
+@Tag("develop")
 @SpringBootTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-public abstract class ContextTest {
+public abstract class DevelopTest {
 
 }

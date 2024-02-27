@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MeetingWriter {
     private final MeetingRepository meetingRepository;
-    public Long create(MeetingCreate meetingCreate) {
+    public Meeting create(MeetingCreate meetingCreate) {
         return meetingRepository.create(meetingCreate);
     }
 }

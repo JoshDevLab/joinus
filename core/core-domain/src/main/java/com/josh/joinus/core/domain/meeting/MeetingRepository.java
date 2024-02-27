@@ -7,7 +7,7 @@ import com.josh.joinus.core.dto.response.MeetingTechDto;
 import java.util.List;
 
 public interface MeetingRepository {
-    Long create(MeetingCreate meetingCreate);
+    Meeting create(MeetingCreate meetingCreate);
     List<Meeting> searchByCondition(MeetingSearchCondition meetingSearchCondition);
     List<MeetingTechDto> findByMeetingTechByMeetingIds(List<Long> meetingIds);
     List<MeetingPositionDto> findByMeetingPositionByMeetingIds(List<Long> meetingIds);

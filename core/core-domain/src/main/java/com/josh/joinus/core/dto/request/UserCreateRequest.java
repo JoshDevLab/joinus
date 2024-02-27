@@ -9,14 +9,14 @@ import java.util.List;
 @Getter
 public class UserCreateRequest {
     private String nickname;
-    private Position position;
+    private Long positionId;
     private int careerYear;
     private List<Long> techIdList;
 
     @Builder
-    public UserCreateRequest(String nickname, Position position, int careerYear, List<Long> techIdList) {
+    public UserCreateRequest(String nickname, Long positionId, int careerYear, List<Long> techIdList) {
         this.nickname = nickname;
-        this.position = position;
+        this.positionId = positionId;
         this.careerYear = careerYear;
         this.techIdList = techIdList;
     }

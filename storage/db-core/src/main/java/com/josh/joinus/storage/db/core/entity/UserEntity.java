@@ -9,29 +9,28 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nickname;
-    @Enumerated(EnumType.STRING)
-    private Position position;
+    private Long positionId;
     private int careerYear;
     private Long userTechId;
 
     public static UserEntity create(UserCreateRequest userCreateRequest) {
         return UserEntity.builder()
                 .nickname(userCreateRequest.getNickname())
-                .position(userCreateRequest.getPosition())
+                .positionId(userCreateRequest.getPositionId())
                 .careerYear(userCreateRequest.getCareerYear())
                 .build();
     }
 
     @Builder
-    private UserEntity(String nickname, Position position, int careerYear, Long userTechId) {
+    private UserEntity(String nickname, Long positionId, int careerYear, Long userTechId) {
         this.nickname = nickname;
-        this.position = position;
+        this.positionId = positionId;
         this.careerYear = careerYear;
         this.userTechId = userTechId;
     }
@@ -41,7 +40,7 @@ public class UserEntity {
                 .id(id)
                 .careerYear(careerYear)
                 .nickname(nickname)
-                .position(position)
+                .positionId(positionId)
                 .build();
     }
 }

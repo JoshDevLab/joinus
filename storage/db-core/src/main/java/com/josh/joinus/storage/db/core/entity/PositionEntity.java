@@ -1,5 +1,6 @@
 package com.josh.joinus.storage.db.core.entity;
 
+import com.josh.joinus.core.domain.Position;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,5 +20,16 @@ public class PositionEntity {
 
     public PositionEntity(String name) {
         this.name = name;
+    }
+
+    public static PositionEntity create(String positionName) {
+        return new PositionEntity(positionName);
+    }
+
+    public Position toDomain() {
+        return Position.builder()
+                .id(this.id)
+                .name(this.name)
+                .build();
     }
 }

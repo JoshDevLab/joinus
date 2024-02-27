@@ -9,7 +9,7 @@ import java.util.List;
 public class User extends Base {
     private Long id;
     private String nickname;
-    private Position position;
+    private Long positionId;
     private int careerYear;
     private List<Tech> techList;
 
@@ -18,10 +18,10 @@ public class User extends Base {
     }
 
     @Builder
-    private User(Long id, String nickname, Position position, int careerYear, List<Tech> techList) {
+    private User(Long id, String nickname, Long positionId, int careerYear, List<Tech> techList) {
         this.id = id;
         this.nickname = nickname;
-        this.position = position;
+        this.positionId = positionId;
         this.careerYear = careerYear;
         this.techList = techList;
     }

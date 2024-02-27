@@ -1,17 +1,17 @@
 package com.josh.joinus.core.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public enum Position {
+public class Position {
+    private Long id;
+    private String name;
 
-    BACK_END("백엔드"),
-    FRONT_END("프론트엔드"),
-    FULL_STACK("풀스택"),
-    DESIGNER("디자이너"),
-    PRODUCT_MANAGER("기획자");
-
-    private final String description;
+    @Builder
+    private Position(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

@@ -33,8 +33,8 @@ public class MeetingEntityRepository implements MeetingRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Long create(MeetingCreate meetingCreate) {
-        return meetingJpaRepository.save(MeetingEntity.create(meetingCreate)).getId();
+    public Meeting create(MeetingCreate meetingCreate) {
+        return meetingJpaRepository.save(MeetingEntity.create(meetingCreate)).toDomain();
     }
 
     @Override
