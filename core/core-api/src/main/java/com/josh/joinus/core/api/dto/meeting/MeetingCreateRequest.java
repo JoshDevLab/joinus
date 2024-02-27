@@ -1,11 +1,14 @@
 package com.josh.joinus.core.api.dto.meeting;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.josh.joinus.core.api.util.ValidEnum;
 import com.josh.joinus.core.domain.meeting.MeetingCreate;
 import com.josh.joinus.core.domain.meeting.MeetingType;
 import com.josh.joinus.core.domain.ProcessWay;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -25,25 +28,28 @@ public class MeetingCreateRequest {
     @Size(min = 1, max = 300)
     private String content;
 
-    @NotBlank(message = "모임의 목적은 필수입니다.")
+    @ValidEnum(enumClass = MeetingType.class)
     private MeetingType meetingType;
 
-    @NotBlank(message = "모임의 필요기술스택은 필수입니다.")
+    @NotEmpty(message = "모임의 필요기술스택은 필수입니다.")
     private List<Long> techIdList;
 
-    @NotBlank(message = "모임의 진행방식은 필수입니다.")
+    @ValidEnum(enumClass = ProcessWay.class)
     private ProcessWay processWay;
 
-    @NotBlank(message = "모임의 시작진행날짜는 필수입니다.")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @NotNull(message = "모임의 시작진행날짜는 필수입니다.")
     private LocalDateTime startDateTime;
 
-    @NotBlank(message = "모임의 인원은 필수입니다.")
+    @Min(2)
     private int headCount;
 
-    @NotBlank(message = "모임의 인원포지션은 필수입니다.")
-    @NotBlank
+    @NotEmpty(message = "모임의 인원포지션은 필수입니다.")
     private List<Long> positionList;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime expiredDateTime;
 
     public MeetingCreate toServiceDto() {

@@ -1,6 +1,7 @@
 package com.josh.joinus.core.api.controller.meeting;
 
 import com.josh.joinus.core.api.dto.meeting.MeetingCreateRequest;
+import com.josh.joinus.core.domain.meeting.Meeting;
 import com.josh.joinus.core.domain.meeting.MeetingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @PostMapping
-    public ResponseEntity<Long> create(@Valid @RequestBody MeetingCreateRequest meetingCreateRequest) {
-        return ResponseEntity.ok(meetingService.create(meetingCreateRequest.toServiceDto()).getId());
+    public ResponseEntity<Meeting> create(@Valid @RequestBody MeetingCreateRequest meetingCreateRequest) {
+        return ResponseEntity.ok(meetingService.create(meetingCreateRequest.toServiceDto()));
     }
 }

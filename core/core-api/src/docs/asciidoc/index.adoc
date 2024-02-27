@@ -11,14 +11,13 @@
 
 This is the Core API documentation.
 
-== Example API
+[[meeting-create]]
+=== 신규 모임 등록
 
-=== Add POST API
-==== Curl Request
-include::{snippets}/add/curl-request.adoc[]
-==== Request Fields
-include::{snippets}/add/request-fields.adoc[]
-==== Http Response
-include::{snippets}/add/http-response.adoc[]
-==== Response Fields
-include::{snippets}/add/response-fields.adoc[]
+==== HTTP Request
+include::{snippets}/meeting-create/http-request.adoc[]
+include::{snippets}/meeting-create/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/meeting-create/http-response.adoc[]
+include::{snippets}/meeting-create/response-fields.adoc[]

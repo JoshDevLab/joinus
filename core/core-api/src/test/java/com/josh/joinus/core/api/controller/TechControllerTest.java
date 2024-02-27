@@ -1,21 +1,19 @@
 package com.josh.joinus.core.api.controller;
 
-import com.josh.joinus.core.api.TechRequest;
 import com.josh.joinus.core.api.controller.meeting.MeetingController;
 import com.josh.joinus.core.api.dto.meeting.MeetingCreateRequest;
-import com.josh.joinus.core.domain.Tech;
-import com.josh.joinus.core.domain.TechService;
+import com.josh.joinus.core.domain.ProcessWay;
+import com.josh.joinus.core.domain.meeting.Meeting;
+import com.josh.joinus.core.domain.meeting.MeetingCreate;
 import com.josh.joinus.core.domain.meeting.MeetingService;
+import com.josh.joinus.core.domain.meeting.MeetingType;
 import com.josh.joinus.test.api.RestDocsTest;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.restdocs.payload.JsonFieldType;
 
-import static com.josh.joinus.test.api.RestDocsUtils.requestPreprocessor;
-import static com.josh.joinus.test.api.RestDocsUtils.responsePreprocessor;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -26,13 +24,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 
 class TechControllerTest extends RestDocsTest {
 
-    private MeetingService meetingService = mock(MeetingService.class);
-
     @Override
     protected Object initController() {
-        return new MeetingController(meetingService);
+        return null;
     }
-
-
-
 }
