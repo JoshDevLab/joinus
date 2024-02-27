@@ -4,17 +4,10 @@ import com.josh.joinus.ContextTest;
 import com.josh.joinus.core.domain.*;
 import com.josh.joinus.core.dto.request.UserCreateRequest;
 import com.josh.joinus.core.exception.MultipleMeetingsException;
-import com.josh.joinus.storage.db.core.entity.UserEntity;
-import com.josh.joinus.storage.db.core.persistence.UserJpaRepository;
-import com.josh.joinus.storage.db.core.repository.UserEntityRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -130,9 +123,9 @@ class MeetingServiceTest extends ContextTest {
                 .positionList(List.of(springBoot.getId(), mySql.getId(), react.getId()))
                 .build();
 
-        //when
-        Meeting meeting = meetingService.create(meetingCreate);
+        meetingService.create(meetingCreate);
 
+        //when
         //then
         assertThatThrownBy(() -> meetingService.create(meetingCreate2))
                 .isInstanceOf(MultipleMeetingsException.class)
