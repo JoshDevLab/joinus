@@ -1,35 +1,22 @@
 package com.josh.joinus.core.api.controller.meeting;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.josh.joinus.core.api.TechRequest;
-import com.josh.joinus.core.api.controller.TechController;
 import com.josh.joinus.core.api.dto.meeting.MeetingCreateRequest;
 import com.josh.joinus.core.domain.ProcessWay;
-import com.josh.joinus.core.domain.Tech;
-import com.josh.joinus.core.domain.TechService;
 import com.josh.joinus.core.domain.meeting.*;
 import com.josh.joinus.test.api.RestDocsTest;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.post;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;

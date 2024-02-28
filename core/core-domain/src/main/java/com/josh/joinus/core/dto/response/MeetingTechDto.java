@@ -2,9 +2,13 @@ package com.josh.joinus.core.dto.response;
 
 import com.josh.joinus.core.domain.Tech;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
+@EqualsAndHashCode
 public class MeetingTechDto {
     private Long meetingId;
     private String techName;
@@ -21,4 +25,5 @@ public class MeetingTechDto {
         this.techName = techName;
         this.techImg = techImg;
     }
+
 }

@@ -1,7 +1,7 @@
 package com.josh.joinus.core.api.controller;
 
-import com.josh.joinus.core.api.TechRequest;
-import com.josh.joinus.core.domain.Tech;
+import com.josh.joinus.core.api.reuqest.TechRequest;
+import com.josh.joinus.core.api.dto.TechResponse;
 import com.josh.joinus.core.domain.TechService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

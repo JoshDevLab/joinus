@@ -1,4 +1,4 @@
-package com.josh.joinus.core.api;
+package com.josh.joinus.core.api.reuqest;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

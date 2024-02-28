@@ -1,4 +1,4 @@
-package com.josh.joinus.core.api.controller;
+package com.josh.joinus.core.api.dto;
 
 import com.josh.joinus.core.domain.Tech;
 import lombok.*;

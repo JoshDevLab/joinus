@@ -1,6 +1,5 @@
 package com.josh.joinus.core.dto.response;
 
-import com.josh.joinus.core.domain.Tech;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,20 +13,20 @@ public class MeetingResponse {
     private List<MeetingTechDto> techList;
     private List<String> positionList;
     private LocalDateTime expiredDate;
-    private String userName;
+    private String userNickname;
     private int views;
     private int reviewCount;
 
     @Builder
     public MeetingResponse(Long meetingId, String meetingName, List<MeetingTechDto> techList, List<String> positionList,
-                           LocalDateTime expiredDate, String userName, int views, int reviewCount)
+                           LocalDateTime expiredDate, String userNickname, int views, int reviewCount)
     {
         this.meetingId = meetingId;
         this.meetingName = meetingName;
         this.techList = techList;
         this.positionList = positionList;
         this.expiredDate = expiredDate;
-        this.userName = userName;
+        this.userNickname = userNickname;
         this.views = views;
         this.reviewCount = reviewCount;
     }
