@@ -18,6 +18,8 @@ public class MeetingService {
     private final MeetingTechWriter meetingTechWriter;
     private final MeetingPositionWriter meetingPositionWriter;
 
+    private final MeetingCommentReader meetingCommentReader;
+
     @Transactional
     public Meeting create(MeetingCreate meetingCreate) {
         // validate
