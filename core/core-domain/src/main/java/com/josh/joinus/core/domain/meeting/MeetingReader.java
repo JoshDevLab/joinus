@@ -53,4 +53,8 @@ public class MeetingReader {
             throw new MultipleMeetingsException("스터디나 사이드프로젝트 중 하나에 2개 이상의 모임을 만들수 없습니다.");
         }
     }
+
+    public Meeting findByIdMeetingDetail(Long id) {
+        return meetingRepository.findByIdMeetingDetail(id);
+    }
 }

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.josh.joinus.storage.db.core.entity.QMeetingCommentEntity.meetingCommentEntity;
 import static com.josh.joinus.storage.db.core.entity.QMeetingEntity.meetingEntity;
 import static com.josh.joinus.storage.db.core.entity.QMeetingPositionEntity.meetingPositionEntity;
 import static com.josh.joinus.storage.db.core.entity.QMeetingTechEntity.meetingTechEntity;
@@ -108,6 +109,11 @@ public class MeetingEntityRepository implements MeetingRepository {
                 .fetch();
 
         return !meetingEntityList.isEmpty();
+    }
+
+    @Override
+    public Meeting findByIdMeetingDetail(Long meetingId) {
+        return null;
     }
 
 

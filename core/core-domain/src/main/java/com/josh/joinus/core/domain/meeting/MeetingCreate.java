@@ -9,6 +9,8 @@ import java.util.List;
 
 @Getter
 public class MeetingCreate {
+    private final int viewCount = 0;
+
     private Long leaderUserId;
     private String meetingName;
     private String content;

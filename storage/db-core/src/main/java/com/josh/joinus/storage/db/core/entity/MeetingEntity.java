@@ -2,6 +2,7 @@ package com.josh.joinus.storage.db.core.entity;
 
 import com.josh.joinus.core.domain.*;
 import com.josh.joinus.core.domain.meeting.Meeting;
+import com.josh.joinus.core.domain.meeting.MeetingComment;
 import com.josh.joinus.core.domain.meeting.MeetingCreate;
 import com.josh.joinus.core.domain.meeting.MeetingStatus;
 import com.josh.joinus.core.domain.meeting.MeetingType;
@@ -44,6 +45,8 @@ public class MeetingEntity extends BaseEntity {
 
     private int headCount;
 
+    private int viewCount;
+
     private LocalDateTime expiredDateTime;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "meetingEntity",
@@ -72,6 +75,7 @@ public class MeetingEntity extends BaseEntity {
                 .meetingStatus(meetingCreate.getMeetingStatus())
                 .startDateTime(meetingCreate.getStartDateTime())
                 .headCount(meetingCreate.getHeadCount())
+                .viewCount(meetingCreate.getViewCount())
                 .expiredDateTime(meetingCreate.getExpiredDateTime())
                 .build();
     }
@@ -79,7 +83,8 @@ public class MeetingEntity extends BaseEntity {
     @Builder
     public MeetingEntity(Long leaderUserId, String meetingName, String content, MeetingType meetingType,
                          ProcessWay processWay, MeetingStatus meetingStatus,
-                         LocalDateTime startDateTime, int headCount, LocalDateTime expiredDateTime)
+                         LocalDateTime startDateTime, int headCount, int viewCount,
+                         LocalDateTime expiredDateTime)
     {
         this.leaderUserId = leaderUserId;
         this.meetingName = meetingName;
@@ -89,6 +94,7 @@ public class MeetingEntity extends BaseEntity {
         this.meetingStatus = meetingStatus;
         this.startDateTime = startDateTime;
         this.headCount = headCount;
+        this.viewCount = viewCount;
         this.expiredDateTime = expiredDateTime;
     }
 
@@ -121,5 +127,6 @@ public class MeetingEntity extends BaseEntity {
                 .expiredDateTime(expiredDateTime)
                 .build();
     }
+
 
 }

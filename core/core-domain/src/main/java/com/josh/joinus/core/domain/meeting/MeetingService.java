@@ -34,4 +34,11 @@ public class MeetingService {
     public List<MeetingResponse> searchByCondition(MeetingSearchCondition condition) {
         return meetingReader.searchByCondition(condition);
     }
+
+    @Transactional
+    public MeetingResponse meetingDetail(Long id, Long userId) {
+        Meeting meeting = meetingReader.findByIdMeetingDetail(id);
+        meeting.incrementViewCount(userId);
+        return null;
+    }
 }

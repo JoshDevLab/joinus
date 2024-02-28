@@ -30,4 +30,11 @@ public class MeetingController {
     {
         return ResponseEntity.ok(meetingService.searchByCondition(meetingSearchRequest.toServiceDto()));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MeetingResponse> meetingDetail(@PathVariable String id) {
+        // 추후 security 도입 후 접속한 user 의 id 넣어줌
+        Long accessUserId = 3L;
+        return ResponseEntity.ok(meetingService.meetingDetail(Long.valueOf(id), accessUserId));
+    }
 }
