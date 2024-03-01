@@ -27,10 +27,11 @@ public class Meeting extends Base {
     private List<Tech> techList;
     private List<Position> positionList;
 
-    public void incrementViewCount(Long accessUserId) {
-        if (this.leaderUserId.equals(accessUserId)) {
-            return;
+    public boolean incrementViewCount(Long accessUserId) {
+        if (!this.leaderUserId.equals(accessUserId)) {
+            this.viewCount += 1;
+            return true;
         }
-        this.viewCount += 1;
+        return false;
     }
 }

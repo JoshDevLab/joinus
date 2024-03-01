@@ -10,4 +10,7 @@ public class MeetingWriter {
     public Meeting create(MeetingCreate meetingCreate) {
         return meetingRepository.create(meetingCreate);
     }
+
+    public void updateViewCount() {
+    }
 }

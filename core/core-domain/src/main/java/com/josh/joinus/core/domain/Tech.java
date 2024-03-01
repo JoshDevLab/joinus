@@ -10,6 +10,11 @@ public class Tech extends Base {
     private String name;
     private String techImg;
 
+    public Tech(String name, String techImg) {
+        this.name = name;
+        this.techImg = techImg;
+    }
+
     @Builder
     private Tech(Long id, String name, String techImg) {
         this.id = id;

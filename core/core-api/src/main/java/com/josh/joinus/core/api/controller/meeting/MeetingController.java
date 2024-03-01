@@ -3,6 +3,7 @@ package com.josh.joinus.core.api.controller.meeting;
 import com.josh.joinus.core.api.dto.meeting.MeetingCreateRequest;
 import com.josh.joinus.core.api.reuqest.MeetingSearchRequest;
 import com.josh.joinus.core.domain.meeting.Meeting;
+import com.josh.joinus.core.domain.meeting.MeetingDetailResponse;
 import com.josh.joinus.core.domain.meeting.MeetingService;
 import com.josh.joinus.core.dto.response.MeetingResponse;
 import jakarta.validation.Valid;
@@ -32,7 +33,7 @@ public class MeetingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MeetingResponse> meetingDetail(@PathVariable String id) {
+    public ResponseEntity<MeetingDetailResponse> meetingDetail(@PathVariable String id) {
         // 추후 security 도입 후 접속한 user 의 id 넣어줌
         Long accessUserId = 3L;
         return ResponseEntity.ok(meetingService.meetingDetail(Long.valueOf(id), accessUserId));

@@ -9,6 +9,10 @@ public class Position {
     private Long id;
     private String name;
 
+    public Position(String name) {
+        this.name = name;
+    }
+
     @Builder
     private Position(Long id, String name) {
         this.id = id;

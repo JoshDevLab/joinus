@@ -1,5 +1,7 @@
 package com.josh.joinus.core.domain.meeting;
 
+import com.josh.joinus.core.domain.Position;
+import com.josh.joinus.core.domain.Tech;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.core.dto.response.MeetingPositionDto;
 import com.josh.joinus.core.dto.response.MeetingResponse;
@@ -17,6 +19,9 @@ import static java.util.stream.Collectors.groupingBy;
 @RequiredArgsConstructor
 public class MeetingReader {
     private final MeetingRepository meetingRepository;
+    private final MeetingTechRepository meetingTechRepository;
+    private final MeetingPositionRepository meetingPositionRepository;
+    private final MeetingCommentRepository meetingCommentRepository;
 
     public List<MeetingResponse> searchByCondition(MeetingSearchCondition condition) {
         List<Meeting> meetingList = meetingRepository.searchByCondition(condition);
@@ -54,7 +59,15 @@ public class MeetingReader {
         }
     }
 
-    public Meeting findByIdMeetingDetail(Long id) {
-        return meetingRepository.findByIdMeetingDetail(id);
+    public Meeting findById(Long id) {
+        return meetingRepository.findById(id);
+    }
+
+    public MeetingDetailResponse findByIdMeetingDetail(Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId);
+        List<Tech> techList = meetingTechRepository.findByMeetingId(meetingId);
+        List<Position> positionList = meetingPositionRepository.findByMeetingId(meetingId);
+        List<MeetingComment> meetingCommentList = meetingCommentRepository.findByMeetingId(meetingId);
+        return MeetingDetailResponse.create(meeting, techList, positionList, meetingCommentList);
     }
 }

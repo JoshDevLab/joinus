@@ -18,8 +18,6 @@ public class MeetingService {
     private final MeetingTechWriter meetingTechWriter;
     private final MeetingPositionWriter meetingPositionWriter;
 
-    private final MeetingCommentReader meetingCommentReader;
-
     @Transactional
     public Meeting create(MeetingCreate meetingCreate) {
         // validate
@@ -38,9 +36,13 @@ public class MeetingService {
     }
 
     @Transactional
-    public MeetingResponse meetingDetail(Long id, Long userId) {
-        Meeting meeting = meetingReader.findByIdMeetingDetail(id);
-        meeting.incrementViewCount(userId);
-        return null;
+    public MeetingDetailResponse meetingDetail(Long id, Long userId) {
+        Meeting meeting = meetingReader.findById(id);
+
+        if (meeting.incrementViewCount(userId)) {
+            //meetingWriter.updateViewCount();
+        }
+
+        return meetingReader.findByIdMeetingDetail(id);
     }
 }

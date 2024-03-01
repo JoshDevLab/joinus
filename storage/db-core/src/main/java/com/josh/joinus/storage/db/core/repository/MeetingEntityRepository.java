@@ -112,8 +112,10 @@ public class MeetingEntityRepository implements MeetingRepository {
     }
 
     @Override
-    public Meeting findByIdMeetingDetail(Long meetingId) {
-        return null;
+    public Meeting findById(Long meetingId) {
+        return meetingJpaRepository.findById(meetingId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 미팅입니다."))
+                .toDomain();
     }
 
 

@@ -12,5 +12,5 @@ public interface MeetingRepository {
     List<MeetingTechDto> findByMeetingTechByMeetingIds(List<Long> meetingIds);
     List<MeetingPositionDto> findByMeetingPositionByMeetingIds(List<Long> meetingIds);
     boolean duplicateLeaderUser(Long leaderUserId, MeetingType meetingType);
-    Meeting findByIdMeetingDetail(Long meetingId);
+    Meeting findById(Long meetingId);
 }
