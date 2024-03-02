@@ -228,5 +228,51 @@ class MeetingServiceTest extends ContextTest {
                 );
     }
 
+    @DisplayName("모임의 상세정보를 볼 수 있다.")
+    @Test
+    void meetingDetail() {
+        //given
+        UserCreateRequest userCreateRequest = UserCreateRequest.builder()
+                .nickname("test")
+                .careerYear(1)
+                .build();
+
+        UserCreateRequest userCreateRequest2 = UserCreateRequest.builder()
+                .nickname("test")
+                .careerYear(1)
+                .build();
+
+        User savedUser = userRepository.register(userCreateRequest);
+        User savedUser2 = userRepository.register(userCreateRequest2);
+
+        Position backEnd = positionRepository.add("BACK_END");
+        Position frontEnd = positionRepository.add("FRONT_END");
+        Position designer = positionRepository.add("DESIGNER");
+
+        Tech springBoot = techRepository.add("Spring Boot");
+        Tech mySql = techRepository.add("MySql");
+        Tech react = techRepository.add("React");
+
+        MeetingCreate meetingCreate = MeetingCreate.builder()
+                .leaderUserId(savedUser.getId())
+                .meetingName("test meetingName")
+                .content("test content")
+                .meetingType(MeetingType.PROJECT)
+                .techIdList(List.of(backEnd.getId(), frontEnd.getId(), designer.getId()))
+                .processWay(ProcessWay.ONOFFLINE)
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 9, 0, 0))
+                .headCount(5)
+                .expiredDateTime(LocalDateTime.of(2024, 6, 4, 9, 0, 0))
+                .positionList(List.of(springBoot.getId(), mySql.getId(), react.getId()))
+                .build();
+
+        Meeting meeting = meetingService.create(meetingCreate);
+
+        //when
+        MeetingDetailResponse meetingDetailResponse = meetingService.meetingDetail(meeting.getId(), savedUser2.getId());
+
+        //then
+        System.out.println("meetingDetailResponse = " + meetingDetailResponse);
+    }
 
 }
