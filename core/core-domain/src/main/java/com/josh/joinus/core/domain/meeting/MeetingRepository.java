@@ -13,4 +13,5 @@ public interface MeetingRepository {
     List<MeetingPositionDto> findByMeetingPositionByMeetingIds(List<Long> meetingIds);
     boolean duplicateLeaderUser(Long leaderUserId, MeetingType meetingType);
     Meeting findById(Long meetingId);
+    void updateViewCount(Long meetingId, int viewCount);
 }

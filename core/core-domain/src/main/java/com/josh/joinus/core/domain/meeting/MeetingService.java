@@ -40,9 +40,9 @@ public class MeetingService {
         Meeting meeting = meetingReader.findById(id);
 
         if (meeting.incrementViewCount(userId)) {
-            //meetingWriter.updateViewCount();
+            meetingWriter.updateViewCount(meeting.getId(), meeting.getViewCount());
         }
 
-        return meetingReader.findByIdMeetingDetail(id);
+        return meetingReader.findByIdMeetingDetail(meeting);
     }
 }

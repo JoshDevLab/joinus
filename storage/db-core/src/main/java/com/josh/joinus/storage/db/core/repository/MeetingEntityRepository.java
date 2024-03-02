@@ -118,6 +118,11 @@ public class MeetingEntityRepository implements MeetingRepository {
                 .toDomain();
     }
 
+    @Override
+    public void updateViewCount(Long meetingId, int viewCount) {
+        meetingJpaRepository.updateViewCount(meetingId, viewCount);
+    }
+
 
     private BooleanExpression searchMeetingStatus(MeetingStatus meetingStatus) {
         return meetingStatus == null ? null : meetingEntity.meetingStatus.eq(MeetingStatus.RECRUITING);

@@ -11,6 +11,7 @@ public class MeetingWriter {
         return meetingRepository.create(meetingCreate);
     }
 
-    public void updateViewCount() {
+    public void updateViewCount(Long meetingId, int viewCount) {
+        meetingRepository.updateViewCount(meetingId, viewCount);
     }
 }

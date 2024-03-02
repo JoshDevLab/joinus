@@ -63,11 +63,10 @@ public class MeetingReader {
         return meetingRepository.findById(id);
     }
 
-    public MeetingDetailResponse findByIdMeetingDetail(Long meetingId) {
-        Meeting meeting = meetingRepository.findById(meetingId);
-        List<Tech> techList = meetingTechRepository.findByMeetingId(meetingId);
-        List<Position> positionList = meetingPositionRepository.findByMeetingId(meetingId);
-        List<MeetingComment> meetingCommentList = meetingCommentRepository.findByMeetingId(meetingId);
+    public MeetingDetailResponse findByIdMeetingDetail(Meeting meeting) {
+        List<Tech> techList = meetingTechRepository.findByMeetingId(meeting.getId());
+        List<Position> positionList = meetingPositionRepository.findByMeetingId(meeting.getId());
+        List<MeetingComment> meetingCommentList = meetingCommentRepository.findByMeetingId(meeting.getId());
         return MeetingDetailResponse.create(meeting, techList, positionList, meetingCommentList);
     }
 }
