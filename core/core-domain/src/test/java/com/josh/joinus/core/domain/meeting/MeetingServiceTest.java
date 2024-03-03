@@ -206,7 +206,7 @@ class MeetingServiceTest extends ContextTest {
         System.out.println("meetingResponses = " + meetingResponses);
 
         //then
-        Assertions.assertThat(meetingResponses).hasSize(2)
+        assertThat(meetingResponses).hasSize(2)
                 .extracting("meetingId", "meetingName", "techList", "positionList", "expiredDate",
                         "userNickname", "views", "reviewCount")
                 .containsExactlyInAnyOrder(
@@ -274,7 +274,13 @@ class MeetingServiceTest extends ContextTest {
         MeetingDetailResponse meetingDetailResponse = meetingService.meetingDetail(meeting.getId(), savedUser2.getId());
 
         //then
-        System.out.println("meetingDetailResponse = " + meetingDetailResponse);
+        assertThat(meetingDetailResponse.getMeeting().getMeetingName()).isEqualTo("test meetingName");
+        assertThat(meetingDetailResponse.getMeeting().getContent()).isEqualTo("test content");
+        assertThat(meetingDetailResponse.getMeeting().getMeetingType()).isEqualTo(MeetingType.PROJECT);
+        assertThat(meetingDetailResponse.getMeeting().getViewCount()).isEqualTo(1);
+        assertThat(meetingDetailResponse.getMeetingCommentList()).hasSize(0);
+        assertThat(meetingDetailResponse.getPositionList()).hasSize(3);
+        assertThat(meetingDetailResponse.getTechList()).hasSize(3);
     }
 
 }
