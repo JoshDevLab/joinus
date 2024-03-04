@@ -74,17 +74,17 @@ public class MeetingEntity extends BaseEntity {
                 .meetingStatus(meetingCreate.getMeetingStatus())
                 .startDateTime(meetingCreate.getStartDateTime())
                 .headCount(meetingCreate.getHeadCount())
-                .viewCount(meetingCreate.getViewCount())
+                .viewCount(0)
                 .expiredDateTime(meetingCreate.getExpiredDateTime())
                 .build();
     }
 
     @Builder
-    public MeetingEntity(Long leaderUserId, String meetingName, String content, MeetingType meetingType,
-                         ProcessWay processWay, MeetingStatus meetingStatus,
-                         LocalDateTime startDateTime, int headCount, int viewCount,
-                         LocalDateTime expiredDateTime)
-    {
+    public MeetingEntity(Long id, Long leaderUserId, String meetingName, String content, MeetingType meetingType,
+                         ProcessWay processWay, MeetingStatus meetingStatus, LocalDateTime startDateTime, int headCount,
+                         int viewCount, LocalDateTime expiredDateTime, List<MeetingTechEntity> meetingTechEntityList,
+                         List<MeetingPositionEntity> meetingPositionEntityList) {
+        this.id = id;
         this.leaderUserId = leaderUserId;
         this.meetingName = meetingName;
         this.content = content;
@@ -95,6 +95,8 @@ public class MeetingEntity extends BaseEntity {
         this.headCount = headCount;
         this.viewCount = viewCount;
         this.expiredDateTime = expiredDateTime;
+        this.meetingTechEntityList = meetingTechEntityList;
+        this.meetingPositionEntityList = meetingPositionEntityList;
     }
 
     public Meeting toDomain() {
@@ -108,6 +110,7 @@ public class MeetingEntity extends BaseEntity {
                .meetingStatus(meetingStatus)
                .startDateTime(startDateTime)
                .headCount(headCount)
+               .viewCount(viewCount)
                .expiredDateTime(expiredDateTime)
                .build();
     }

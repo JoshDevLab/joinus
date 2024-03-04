@@ -32,10 +32,17 @@ public class MeetingController {
         return ResponseEntity.ok(meetingService.searchByCondition(meetingSearchRequest.toServiceDto()));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MeetingDetailResponse> meetingDetail(@PathVariable String id) {
+    @GetMapping("/{meetingId}")
+    public ResponseEntity<MeetingDetailResponse> meetingDetail(@PathVariable String meetingId) {
         // 추후 security 도입 후 접속한 user 의 id 넣어줌
         Long accessUserId = 3L;
-        return ResponseEntity.ok(meetingService.meetingDetail(Long.valueOf(id), accessUserId));
+        return ResponseEntity.ok(meetingService.meetingDetail(Long.valueOf(meetingId), accessUserId));
+    }
+
+    @PostMapping("/join/{meetingId}")
+    public ResponseEntity<Long> join(@PathVariable String meetingId) {
+        // 추후 security 도입 후 접속한 user 의 id 넣어줌
+        Long joinUserId = 3L;
+        return ResponseEntity.ok(meetingService.join(Long.valueOf(meetingId), joinUserId));
     }
 }

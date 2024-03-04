@@ -18,4 +18,11 @@ public class UserEntityRepository implements UserRepository {
     public User register(UserCreateRequest userCreateRequest) {
         return userJpaRepository.save(UserEntity.create(userCreateRequest)).toDomain();
     }
+
+    @Override
+    public User findById(Long joinUserId) {
+        return userJpaRepository.findById(joinUserId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."))
+                .toDomain();
+    }
 }

@@ -1,5 +1,7 @@
 package com.josh.joinus.core.domain.meeting;
 
+import com.josh.joinus.core.domain.User;
+import com.josh.joinus.core.domain.UserRepository;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.core.dto.response.MeetingResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ public class MeetingService {
 
     private final MeetingTechWriter meetingTechWriter;
     private final MeetingPositionWriter meetingPositionWriter;
+
+    private final MeetingJoinMemberValidator meetingJoinMemberValidator;
 
     @Transactional
     public Meeting create(MeetingCreate meetingCreate) {
@@ -44,5 +48,17 @@ public class MeetingService {
         }
 
         return meetingReader.findByIdMeetingDetail(meeting);
+    }
+
+    @Transactional
+    public Long join(Long meetingId, Long joinUserId) {
+        //모임의 인원
+        Meeting meeting = meetingReader.findByIdLock(meetingId);
+        //meeting.decresesHeadCount()
+
+        //참여하려는 유저의 중복모임 방지
+        meetingJoinMemberValidator.duplicateValidation(meeting.getMeetingType(), joinUserId);
+
+        return null;
     }
 }

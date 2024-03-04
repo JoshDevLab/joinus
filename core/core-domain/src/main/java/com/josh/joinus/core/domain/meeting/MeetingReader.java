@@ -69,4 +69,8 @@ public class MeetingReader {
         List<MeetingComment> meetingCommentList = meetingCommentRepository.findByMeetingId(meeting.getId());
         return MeetingDetailResponse.create(meeting, techList, positionList, meetingCommentList);
     }
+
+    public Meeting findByIdLock(Long meetingId) {
+        return meetingRepository.findByIdLock(meetingId);
+    }
 }
