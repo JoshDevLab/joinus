@@ -65,8 +65,8 @@ class MeetingEntityRepositoryTest extends CoreDbContextTest {
 
 
         //when
-        Long meetingId = meetingEntityRepository.create(testMeeting);
-        MeetingEntity result = meetingJpaRepository.findById(meetingId).get();
+        Meeting meeting = meetingEntityRepository.create(testMeeting);
+        MeetingEntity result = meetingJpaRepository.findById(meeting.getId()).get();
 
         //then
         assertThat(result.getLeaderUserId()).isEqualTo(1L);

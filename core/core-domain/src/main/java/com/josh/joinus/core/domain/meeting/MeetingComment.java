@@ -13,7 +13,7 @@ public class MeetingComment extends Base {
     private String content;
 
     @Builder
-    public MeetingComment(Long id, Meeting meeting, User user, String content) {
+    private MeetingComment(Long id, Meeting meeting, User user, String content) {
         this.id = id;
         this.meeting = meeting;
         this.user = user;

@@ -2,7 +2,6 @@ package com.josh.joinus.storage.db.core.entity;
 
 import com.josh.joinus.core.domain.*;
 import com.josh.joinus.core.domain.meeting.Meeting;
-import com.josh.joinus.core.domain.meeting.MeetingComment;
 import com.josh.joinus.core.domain.meeting.MeetingCreate;
 import com.josh.joinus.core.domain.meeting.MeetingStatus;
 import com.josh.joinus.core.domain.meeting.MeetingType;
@@ -111,21 +110,6 @@ public class MeetingEntity extends BaseEntity {
                .headCount(headCount)
                .expiredDateTime(expiredDateTime)
                .build();
-    }
-
-    public Meeting toDomainBySearch() {
-        return Meeting.builder()
-                .id(id)
-                .leaderUserId(leaderUserId)
-                .meetingName(meetingName)
-                .content(content)
-                .meetingType(meetingType)
-                .processWay(processWay)
-                .meetingStatus(meetingStatus)
-                .startDateTime(startDateTime)
-                .headCount(headCount)
-                .expiredDateTime(expiredDateTime)
-                .build();
     }
 
 

@@ -4,14 +4,18 @@ import com.josh.joinus.core.domain.Base;
 import com.josh.joinus.core.domain.Position;
 import com.josh.joinus.core.domain.ProcessWay;
 import com.josh.joinus.core.domain.Tech;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Meeting extends Base {
     private Long id;
     private Long leaderUserId;
@@ -23,6 +27,7 @@ public class Meeting extends Base {
     private LocalDateTime startDateTime;
     private int headCount;
     private int viewCount;
+    private int commentCount;
     private LocalDateTime expiredDateTime;
     private List<Tech> techList;
     private List<Position> positionList;

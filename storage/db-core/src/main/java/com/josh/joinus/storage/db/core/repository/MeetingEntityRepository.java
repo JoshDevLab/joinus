@@ -5,6 +5,7 @@ import com.josh.joinus.core.domain.meeting.*;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.core.dto.response.MeetingPositionDto;
 import com.josh.joinus.core.dto.response.MeetingTechDto;
+import com.josh.joinus.storage.db.core.dto.MeetingEntityDto;
 import com.josh.joinus.storage.db.core.dto.MeetingPositionEntityDto;
 import com.josh.joinus.storage.db.core.dto.MeetingTechEntityDto;
 import com.josh.joinus.storage.db.core.entity.*;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.josh.joinus.storage.db.core.entity.QMeetingCommentEntity.meetingCommentEntity;
 import static com.josh.joinus.storage.db.core.entity.QMeetingEntity.meetingEntity;
 import static com.josh.joinus.storage.db.core.entity.QMeetingPositionEntity.meetingPositionEntity;
 import static com.josh.joinus.storage.db.core.entity.QMeetingTechEntity.meetingTechEntity;
@@ -39,9 +41,26 @@ public class MeetingEntityRepository implements MeetingRepository {
 
     @Override
     public List<Meeting> searchByCondition(MeetingSearchCondition meetingSearchCondition) {
-        List<MeetingEntity> meetingEntityList = queryFactory
-                .select(meetingEntity)
+        List<MeetingEntityDto> data = queryFactory
+                .select(
+                        Projections.constructor(
+                                MeetingEntityDto.class,
+                                meetingEntity.id.as("id"),
+                                meetingEntity.leaderUserId.as("leaderUserId"),
+                                meetingEntity.meetingName.as("meetingName"),
+                                meetingEntity.content.as("content"),
+                                meetingEntity.meetingType.as("meetingType"),
+                                meetingEntity.processWay.as("processWay"),
+                                meetingEntity.meetingStatus.as("meetingStatus"),
+                                meetingEntity.startDateTime.as("startDateTime"),
+                                meetingEntity.headCount.as("headCount"),
+                                meetingEntity.viewCount.as("viewCount"),
+                                meetingCommentEntity.count().as("commentCount"),
+                                meetingEntity.expiredDateTime.as("expiredDateTime")
+                        )
+                )
                 .from(meetingEntity)
+                .leftJoin(meetingCommentEntity).on(meetingEntity.id.eq(meetingCommentEntity.meetingEntity.id))
                 .where(
                         meetingEntity.in(
                                 selectDistinct(meetingTechEntity.meetingEntity)
@@ -57,8 +76,9 @@ public class MeetingEntityRepository implements MeetingRepository {
                                         )
                         )
                 )
+                .groupBy(meetingEntity.id)
                 .fetch();
-        return meetingEntityList.stream().map(MeetingEntity::toDomainBySearch).collect(Collectors.toList());
+        return data.stream().map(MeetingEntityDto::toDomain).collect(Collectors.toList());
 
     }
 
