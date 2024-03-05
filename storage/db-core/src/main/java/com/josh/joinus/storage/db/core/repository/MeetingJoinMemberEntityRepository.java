@@ -1,5 +1,6 @@
 package com.josh.joinus.storage.db.core.repository;
 
+import com.josh.joinus.core.domain.meeting.MeetingJoinMember;
 import com.josh.joinus.core.domain.meeting.MeetingJoinMemberRepository;
 import com.josh.joinus.core.domain.meeting.MeetingType;
 import com.josh.joinus.storage.db.core.entity.MeetingJoinMemberEntity;
@@ -10,6 +11,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+
+import java.util.List;
 
 import static com.josh.joinus.storage.db.core.entity.QMeetingEntity.meetingEntity;
 import static com.josh.joinus.storage.db.core.entity.QMeetingJoinMemberEntity.meetingJoinMemberEntity;
@@ -41,5 +44,12 @@ public class MeetingJoinMemberEntityRepository implements MeetingJoinMemberRepos
     @Override
     public Long register(Long meetingId, Long joinUserId) {
         return meetingJoinMemberJpaRepository.save(MeetingJoinMemberEntity.create(meetingId, joinUserId)).getId();
+    }
+
+    @Override
+    public List<MeetingJoinMember> findByMeetingId(Long meetingId) {
+        return meetingJoinMemberJpaRepository.findByMeetingId(meetingId).stream()
+                .map(MeetingJoinMemberEntity::toDomain)
+                .toList();
     }
 }

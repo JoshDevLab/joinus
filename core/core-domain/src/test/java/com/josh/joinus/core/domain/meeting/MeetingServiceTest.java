@@ -7,6 +7,8 @@ import com.josh.joinus.core.dto.request.UserCreateRequest;
 import com.josh.joinus.core.dto.response.MeetingResponse;
 import com.josh.joinus.core.dto.response.MeetingTechDto;
 import com.josh.joinus.core.exception.MultipleMeetingsException;
+import com.josh.joinus.storage.db.core.entity.MeetingJoinMemberEntity;
+import com.josh.joinus.storage.db.core.persistence.MeetingJoinMemberJpaRepository;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -38,6 +45,9 @@ class MeetingServiceTest extends ContextTest {
 
     @Autowired
     PositionRepository positionRepository;
+
+    @Autowired
+    MeetingJoinMemberRepository meetingJoinMemberRepository;
 
     @DisplayName("meeting을 생성할 수 있다.")
     @Test
@@ -281,6 +291,60 @@ class MeetingServiceTest extends ContextTest {
         assertThat(meetingDetailResponse.getMeetingCommentList()).hasSize(0);
         assertThat(meetingDetailResponse.getPositionList()).hasSize(3);
         assertThat(meetingDetailResponse.getTechList()).hasSize(3);
+    }
+
+    @DisplayName("5명이 정원인 모임에 10명이 동시에 신청한다면 5명만 신청이 되고 나머지는 신청이 되지않는다")
+    @Test
+    void concurrencyJoinMeetingBlock() throws Exception {
+        //given
+        final int PARTICIPATION_PEOPLE = 10;
+
+        for (int i = 0; i < PARTICIPATION_PEOPLE; i++) {
+            userRepository.register(UserCreateRequest.builder()
+                    .nickname("test"+i)
+                    .careerYear(i)
+                    .build());
+        }
+
+        MeetingCreate meetingCreate = MeetingCreate.builder()
+                .leaderUserId(1L)
+                .meetingName("test meetingName")
+                .content("test content")
+                .meetingType(MeetingType.PROJECT)
+                .meetingStatus(MeetingStatus.RECRUITING)
+                .headCount(5)
+                .build();
+
+        Meeting meeting = meetingService.create(meetingCreate);
+        Meeting byId = meetingRepository.findById(meeting.getId());
+        System.out.println("byId = " + byId);
+
+        ExecutorService service = Executors.newFixedThreadPool(PARTICIPATION_PEOPLE);
+        CountDownLatch countDownLatch = new CountDownLatch(PARTICIPATION_PEOPLE);
+
+        //when
+        for(int i = 1; i <= PARTICIPATION_PEOPLE; i++) {
+            int userId = i;
+            service.execute(() -> {
+                try {
+                    //테스트될 메소드
+                    meetingService.join(meeting.getId(), (long) userId);
+                    System.out.println("Tid : " + userId);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+                countDownLatch.countDown();
+            });
+        }
+        countDownLatch.await();
+
+
+        List<MeetingJoinMember> result = meetingJoinMemberRepository.findByMeetingId(meeting.getId());
+        Meeting meetingResult = meetingRepository.findById(meeting.getId());
+
+        //then
+        assertThat(result).hasSize(5);
+        assertThat(meetingResult.getHeadCount()).isEqualTo(0);
     }
 
 }

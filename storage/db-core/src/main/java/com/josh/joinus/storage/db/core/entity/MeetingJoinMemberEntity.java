@@ -1,5 +1,6 @@
 package com.josh.joinus.storage.db.core.entity;
 
+import com.josh.joinus.core.domain.meeting.MeetingJoinMember;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -30,6 +31,15 @@ public class MeetingJoinMemberEntity {
         return MeetingJoinMemberEntity.builder()
                 .meetingId(meetingId)
                 .userId(joinUserId)
+                .build();
+    }
+
+    public MeetingJoinMember toDomain() {
+        return MeetingJoinMember
+                .builder()
+                .id(this.id)
+                .meetingId(this.meetingId)
+                .userId(this.userId)
                 .build();
     }
 }
