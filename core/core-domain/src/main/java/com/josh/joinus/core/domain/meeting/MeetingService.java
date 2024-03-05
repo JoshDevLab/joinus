@@ -54,10 +54,12 @@ public class MeetingService {
     public Long join(Long meetingId, Long joinUserId) {
         //모임의 인원
         Meeting meeting = meetingReader.findByIdLock(meetingId);
-        //meeting.decresesHeadCount()
+        meeting.joinValidate();
 
         //참여하려는 유저의 중복모임 방지
         meetingJoinMemberValidator.duplicateValidation(meeting.getMeetingType(), joinUserId);
+
+
 
         return null;
     }

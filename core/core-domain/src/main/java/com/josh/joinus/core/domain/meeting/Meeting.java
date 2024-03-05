@@ -39,4 +39,14 @@ public class Meeting extends Base {
         }
         return false;
     }
+
+    public void joinValidate() {
+        if (this.meetingStatus.equals(MeetingStatus.END)) {
+            throw new IllegalArgumentException("마감된 모임입니다.");
+        }
+
+        if (this.headCount == 0) {
+            throw new IllegalArgumentException("모집인원이 다 찼습니다.");
+        }
+    }
 }
