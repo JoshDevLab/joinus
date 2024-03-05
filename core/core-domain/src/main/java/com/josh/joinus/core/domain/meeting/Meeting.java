@@ -41,12 +41,20 @@ public class Meeting extends Base {
     }
 
     public void joinValidate() {
-        if (this.meetingStatus.equals(MeetingStatus.END)) {
+        if (isMeetingEnded()) {
             throw new IllegalArgumentException("마감된 모임입니다.");
         }
 
-        if (this.headCount == 0) {
+        if (isHeadCountFull()) {
             throw new IllegalArgumentException("모집인원이 다 찼습니다.");
         }
+    }
+
+    private boolean isMeetingEnded() {
+        return meetingStatus.equals(MeetingStatus.END);
+    }
+
+    private boolean isHeadCountFull() {
+        return headCount == 0;
     }
 }
