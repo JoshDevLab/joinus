@@ -147,6 +147,11 @@ public class MeetingEntityRepository implements MeetingRepository {
         return meetingJpaRepository.findByIdLock(meetingId).toDomain();
     }
 
+    @Override
+    public void updateHeadCount(Long meetingId, int headCount) {
+        meetingJpaRepository.updateHeadCount(meetingId, headCount);
+    }
+
 
     private BooleanExpression searchMeetingStatus(MeetingStatus meetingStatus) {
         return meetingStatus == null ? null : meetingEntity.meetingStatus.eq(MeetingStatus.RECRUITING);

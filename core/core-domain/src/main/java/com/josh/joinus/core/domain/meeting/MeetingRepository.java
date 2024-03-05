@@ -15,4 +15,5 @@ public interface MeetingRepository {
     Meeting findById(Long meetingId);
     void updateViewCount(Long meetingId, int viewCount);
     Meeting findByIdLock(Long meetingId);
+    void updateHeadCount(Long meetingId, int headCount);
 }

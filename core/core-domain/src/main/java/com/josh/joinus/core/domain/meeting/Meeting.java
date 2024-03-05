@@ -57,4 +57,8 @@ public class Meeting extends Base {
     private boolean isHeadCountFull() {
         return headCount == 0;
     }
+
+    public void reduceHeadCount() {
+        this.headCount -= 1;
+    }
 }

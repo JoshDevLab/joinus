@@ -2,6 +2,7 @@ package com.josh.joinus.storage.db.core.repository;
 
 import com.josh.joinus.core.domain.meeting.MeetingJoinMemberRepository;
 import com.josh.joinus.core.domain.meeting.MeetingType;
+import com.josh.joinus.storage.db.core.entity.MeetingJoinMemberEntity;
 import com.josh.joinus.storage.db.core.entity.QMeetingEntity;
 import com.josh.joinus.storage.db.core.entity.QMeetingJoinMemberEntity;
 import com.josh.joinus.storage.db.core.persistence.MeetingJoinMemberJpaRepository;
@@ -17,6 +18,7 @@ import static com.josh.joinus.storage.db.core.entity.QMeetingJoinMemberEntity.me
 @RequiredArgsConstructor
 public class MeetingJoinMemberEntityRepository implements MeetingJoinMemberRepository {
     private final JPAQueryFactory queryFactory;
+    private final MeetingJoinMemberJpaRepository meetingJoinMemberJpaRepository;
 
     @Override
     public boolean findByMeetingTypeAndJoinUserId(MeetingType meetingType, Long joinUserId) {
@@ -34,5 +36,10 @@ public class MeetingJoinMemberEntityRepository implements MeetingJoinMemberRepos
                 .fetchOne();
 
         return cnt > 0;
+    }
+
+    @Override
+    public Long register(Long meetingId, Long joinUserId) {
+        return meetingJoinMemberJpaRepository.save(MeetingJoinMemberEntity.create(meetingId, joinUserId)).getId();
     }
 }

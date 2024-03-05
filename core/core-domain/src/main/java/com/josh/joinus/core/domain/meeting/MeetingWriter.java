@@ -14,4 +14,8 @@ public class MeetingWriter {
     public void updateViewCount(Long meetingId, int viewCount) {
         meetingRepository.updateViewCount(meetingId, viewCount);
     }
+
+    public void updateHeadCount(Long meetingId, int headCount) {
+        meetingRepository.updateHeadCount(meetingId, headCount);
+    }
 }

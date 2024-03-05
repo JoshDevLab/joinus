@@ -20,4 +20,8 @@ public interface MeetingJpaRepository extends JpaRepository<MeetingEntity, Long>
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select m from MeetingEntity m where m.id = :meetingId")
     MeetingEntity findByIdLock(@Param("meetingId") Long meetingId);
+
+    @Modifying
+    @Query("update MeetingEntity m set m.headCount = :headCount where m.id = :meetingId")
+    void updateHeadCount(@Param("meetingId") Long meetingId, @Param("headCount") int headCount);
 }
