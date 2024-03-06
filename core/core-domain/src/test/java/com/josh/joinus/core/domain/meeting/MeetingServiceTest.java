@@ -365,7 +365,7 @@ class MeetingServiceTest extends ContextTest {
 //            service.execute(() -> {
 //                try {
 //                    //테스트될 메소드
-//                    meetingService.joinRequest(1L, (long) userId);
+//                    meetingService.joinAccept(1L, (long) userId);
 //                    System.out.println("Tid : " + userId);
 //                } catch(Exception e) {
 //                    e.printStackTrace();
