@@ -9,4 +9,5 @@ public class MeetingJoinMember {
     private Long id;
     private Long userId;
     private Long meetingId;
+    private JoinStatus joinStatus;
 }

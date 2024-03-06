@@ -1,10 +1,8 @@
 package com.josh.joinus.storage.db.core.entity;
 
+import com.josh.joinus.core.domain.meeting.JoinStatus;
 import com.josh.joinus.core.domain.meeting.MeetingJoinMember;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,17 +18,21 @@ public class MeetingJoinMemberEntity {
     private Long meetingId;
     private Long userId;
 
+    @Enumerated(EnumType.STRING)
+    private JoinStatus joinStatus;
+
     @Builder
-    private MeetingJoinMemberEntity(Long id, Long meetingId, Long userId) {
-        this.id = id;
+    private MeetingJoinMemberEntity(Long meetingId, Long userId, JoinStatus joinStatus) {
         this.meetingId = meetingId;
         this.userId = userId;
+        this.joinStatus = joinStatus;
     }
 
-    public static MeetingJoinMemberEntity create(Long meetingId, Long joinUserId) {
+    public static MeetingJoinMemberEntity createRequest(Long meetingId, Long joinUserId) {
         return MeetingJoinMemberEntity.builder()
                 .meetingId(meetingId)
                 .userId(joinUserId)
+                .joinStatus(JoinStatus.WAITING)
                 .build();
     }
 
@@ -40,6 +42,7 @@ public class MeetingJoinMemberEntity {
                 .id(this.id)
                 .meetingId(this.meetingId)
                 .userId(this.userId)
+                .joinStatus(this.joinStatus)
                 .build();
     }
 }

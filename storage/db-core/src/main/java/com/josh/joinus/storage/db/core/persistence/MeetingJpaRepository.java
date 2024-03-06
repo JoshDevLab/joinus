@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MeetingJpaRepository extends JpaRepository<MeetingEntity, Long> {
 
@@ -19,7 +20,7 @@ public interface MeetingJpaRepository extends JpaRepository<MeetingEntity, Long>
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select m from MeetingEntity m where m.id = :meetingId")
-    MeetingEntity findByIdLock(@Param("meetingId") Long meetingId);
+    Optional<MeetingEntity> findByIdLock(@Param("meetingId") Long meetingId);
 
     @Modifying
     @Query("update MeetingEntity m set m.headCount = :headCount where m.id = :meetingId")

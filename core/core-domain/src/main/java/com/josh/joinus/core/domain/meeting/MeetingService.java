@@ -52,7 +52,22 @@ public class MeetingService {
     }
 
     @Transactional
-    public Long join(Long meetingId, Long joinUserId) {
+    public Long joinRequest(Long meetingId, Long joinUserId) {
+        //모임의 인원
+        Meeting meeting = meetingReader.findById(meetingId);
+
+        // 모임 validation
+        meeting.joinValidate();
+
+        //참여하려는 유저의 중복모임 방지
+        meetingJoinMemberValidator.duplicateValidation(meeting.getMeetingType(), joinUserId);
+
+        // 모임유저테이블에 insert
+        return meetingJoinMemberWriter.registerRequest(meetingId, joinUserId);
+    }
+
+    @Transactional
+    public Long joinAccept(Long meetingId, Long joinUserId) {
         //모임의 인원
         Meeting meeting = meetingReader.findByIdLock(meetingId);
 
@@ -67,6 +82,6 @@ public class MeetingService {
         meetingWriter.updateHeadCount(meetingId, meeting.getHeadCount());
 
         // 모임유저테이블에 insert
-        return meetingJoinMemberWriter.register(meetingId, joinUserId);
+        return meetingJoinMemberWriter.registerRequest(meetingId, joinUserId);
     }
 }

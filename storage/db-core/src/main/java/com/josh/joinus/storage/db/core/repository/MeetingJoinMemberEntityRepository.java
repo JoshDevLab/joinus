@@ -4,8 +4,6 @@ import com.josh.joinus.core.domain.meeting.MeetingJoinMember;
 import com.josh.joinus.core.domain.meeting.MeetingJoinMemberRepository;
 import com.josh.joinus.core.domain.meeting.MeetingType;
 import com.josh.joinus.storage.db.core.entity.MeetingJoinMemberEntity;
-import com.josh.joinus.storage.db.core.entity.QMeetingEntity;
-import com.josh.joinus.storage.db.core.entity.QMeetingJoinMemberEntity;
 import com.josh.joinus.storage.db.core.persistence.MeetingJoinMemberJpaRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +40,8 @@ public class MeetingJoinMemberEntityRepository implements MeetingJoinMemberRepos
     }
 
     @Override
-    public Long register(Long meetingId, Long joinUserId) {
-        return meetingJoinMemberJpaRepository.save(MeetingJoinMemberEntity.create(meetingId, joinUserId)).getId();
+    public Long registerRequest(Long meetingId, Long joinUserId) {
+        return meetingJoinMemberJpaRepository.save(MeetingJoinMemberEntity.createRequest(meetingId, joinUserId)).getId();
     }
 
     @Override
@@ -51,5 +49,12 @@ public class MeetingJoinMemberEntityRepository implements MeetingJoinMemberRepos
         return meetingJoinMemberJpaRepository.findByMeetingId(meetingId).stream()
                 .map(MeetingJoinMemberEntity::toDomain)
                 .toList();
+    }
+
+    @Override
+    public MeetingJoinMember findById(Long id) {
+        return meetingJoinMemberJpaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임 멤버입니다."))
+                .toDomain();
     }
 }

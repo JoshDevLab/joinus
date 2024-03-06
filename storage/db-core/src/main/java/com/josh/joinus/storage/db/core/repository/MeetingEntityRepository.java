@@ -145,13 +145,9 @@ public class MeetingEntityRepository implements MeetingRepository {
 
     @Override
     public Meeting findByIdLock(Long meetingId) {
-        //return meetingJpaRepository.findByIdLock(meetingId).toDomain();
-        MeetingEntity data = queryFactory
-                .selectFrom(meetingEntity)
-                .where(meetingEntity.id.eq(meetingId))
-                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
-                .fetchOne();
-        return data.toDomain();
+        return meetingJpaRepository.findByIdLock(meetingId)
+                .orElseThrow(() -> new IllegalArgumentException("미팅이 존재하지 않습니다."))
+                .toDomain();
     }
 
     @Override
