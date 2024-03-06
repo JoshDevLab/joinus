@@ -11,4 +11,8 @@ public class MeetingJoinMemberWriter {
     public Long registerRequest(Long meetingId, Long joinUserId) {
         return meetingJoinMemberRepository.registerRequest(meetingId, joinUserId);
     }
+
+    public Long updateAccept(Long meetingJoinMemberId) {
+        return meetingJoinMemberRepository.updateAccept(meetingJoinMemberId).getId();
+    }
 }

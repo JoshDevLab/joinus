@@ -21,6 +21,7 @@ public class MeetingService {
     private final MeetingPositionWriter meetingPositionWriter;
 
     private final MeetingJoinMemberValidator meetingJoinMemberValidator;
+    private final MeetingJoinMemberReader meetingJoinMemberReader;
     private final MeetingJoinMemberWriter meetingJoinMemberWriter;
 
     @Transactional
@@ -67,21 +68,19 @@ public class MeetingService {
     }
 
     @Transactional
-    public Long joinAccept(Long meetingId, Long joinUserId) {
+    public Long joinAccept(Long meetingJoinMemberId) {
         //모임의 인원
-        Meeting meeting = meetingReader.findByIdLock(meetingId);
+        MeetingJoinMember meetingJoinMember = meetingJoinMemberReader.findById(meetingJoinMemberId);
+        Meeting meeting = meetingReader.findByIdLock(meetingJoinMember.getMeetingId());
 
         // 모임 validation
         meeting.joinValidate();
 
-        //참여하려는 유저의 중복모임 방지
-        meetingJoinMemberValidator.duplicateValidation(meeting.getMeetingType(), joinUserId);
-
         // 모임인원 1명 감소
         meeting.reduceHeadCount();
-        meetingWriter.updateHeadCount(meetingId, meeting.getHeadCount());
+        meetingWriter.updateHeadCount(meeting.getId(), meeting.getHeadCount());
 
-        // 모임유저테이블에 insert
-        return meetingJoinMemberWriter.registerRequest(meetingId, joinUserId);
+        // 모임유저테이블 update
+        return meetingJoinMemberWriter.updateAccept(meetingJoinMemberId);
     }
 }

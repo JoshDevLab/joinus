@@ -1,5 +1,6 @@
 package com.josh.joinus.storage.db.core.repository;
 
+import com.josh.joinus.core.domain.meeting.JoinStatus;
 import com.josh.joinus.core.domain.meeting.MeetingJoinMember;
 import com.josh.joinus.core.domain.meeting.MeetingJoinMemberRepository;
 import com.josh.joinus.core.domain.meeting.MeetingType;
@@ -56,5 +57,10 @@ public class MeetingJoinMemberEntityRepository implements MeetingJoinMemberRepos
         return meetingJoinMemberJpaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임 멤버입니다."))
                 .toDomain();
+    }
+
+    @Override
+    public MeetingJoinMember updateAccept(Long meetingJoinMemberId) {
+        return meetingJoinMemberJpaRepository.updateAccept(meetingJoinMemberId, JoinStatus.ACCEPT).toDomain();
     }
 }
