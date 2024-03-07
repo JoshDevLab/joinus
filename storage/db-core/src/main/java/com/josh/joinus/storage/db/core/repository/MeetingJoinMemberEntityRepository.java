@@ -60,7 +60,7 @@ public class MeetingJoinMemberEntityRepository implements MeetingJoinMemberRepos
     }
 
     @Override
-    public MeetingJoinMember updateAccept(Long meetingJoinMemberId) {
-        return meetingJoinMemberJpaRepository.updateAccept(meetingJoinMemberId, JoinStatus.ACCEPT).toDomain();
+    public int updateAccept(Long meetingJoinMemberId) {
+        return meetingJoinMemberJpaRepository.updateAccept(meetingJoinMemberId, JoinStatus.ACCEPT);
     }
 }

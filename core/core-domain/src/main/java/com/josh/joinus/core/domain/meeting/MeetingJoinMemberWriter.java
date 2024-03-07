@@ -12,7 +12,7 @@ public class MeetingJoinMemberWriter {
         return meetingJoinMemberRepository.registerRequest(meetingId, joinUserId);
     }
 
-    public Long updateAccept(Long meetingJoinMemberId) {
-        return meetingJoinMemberRepository.updateAccept(meetingJoinMemberId).getId();
+    public int updateAccept(Long meetingJoinMemberId) {
+        return meetingJoinMemberRepository.updateAccept(meetingJoinMemberId);
     }
 }

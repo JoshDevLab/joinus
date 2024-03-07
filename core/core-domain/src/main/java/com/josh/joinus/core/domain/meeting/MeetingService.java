@@ -71,7 +71,7 @@ public class MeetingService {
     public Long joinAccept(Long meetingJoinMemberId) {
         //모임의 인원
         MeetingJoinMember meetingJoinMember = meetingJoinMemberReader.findById(meetingJoinMemberId);
-        Meeting meeting = meetingReader.findByIdLock(meetingJoinMember.getMeetingId());
+        Meeting meeting = meetingReader.findById(meetingJoinMember.getMeetingId());
 
         // 모임 validation
         meeting.joinValidate();
@@ -81,6 +81,6 @@ public class MeetingService {
         meetingWriter.updateHeadCount(meeting.getId(), meeting.getHeadCount());
 
         // 모임유저테이블 update
-        return meetingJoinMemberWriter.updateAccept(meetingJoinMemberId);
+        return (long) meetingJoinMemberWriter.updateAccept(meetingJoinMemberId);
     }
 }

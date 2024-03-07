@@ -7,5 +7,5 @@ public interface MeetingJoinMemberRepository {
     Long registerRequest(Long meetingId, Long joinUserId);
     List<MeetingJoinMember> findByMeetingId(Long meetingId);
     MeetingJoinMember findById(Long id);
-    MeetingJoinMember updateAccept(Long meetingJoinMemberId);
+    int updateAccept(Long meetingJoinMemberId);
 }
