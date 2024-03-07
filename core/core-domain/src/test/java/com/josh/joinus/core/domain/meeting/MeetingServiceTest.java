@@ -317,73 +317,51 @@ class MeetingServiceTest extends ContextTest {
         Meeting meeting = meetingService.create(meetingCreate);
 
         //when
-        Long id = meetingService.joinRequest(meeting.getId(), registerdUser.getId());
-        MeetingJoinMember result = meetingJoinMemberRepository.findById(id);
+        MeetingJoinMember meetingJoinMember = meetingService.joinRequest(meeting.getId(), registerdUser.getId());
 
         //then
-        assertThat(result.getMeetingId()).isEqualTo(meeting.getId());
-        assertThat(result.getUserId()).isEqualTo(registerdUser.getId());
-        assertThat(result.getJoinStatus()).isEqualTo(JoinStatus.WAITING);
+        assertThat(meetingJoinMember.getMeetingId()).isEqualTo(meeting.getId());
+        assertThat(meetingJoinMember.getUserId()).isEqualTo(registerdUser.getId());
+        assertThat(meetingJoinMember.getJoinStatus()).isEqualTo(JoinStatus.WAITING);
 
     }
 
-//    @DisplayName("5명이 정원인 모임에 10명이 동시에 신청한다면 5명만 신청이 되고 나머지는 신청이 되지않는다")
-//    @Test
-//    void concurrencyJoinMeetingBlock() throws Exception {
-//        //given
-//        final int PARTICIPATION_PEOPLE = 10;
-//
-//        for (int i = 0; i < PARTICIPATION_PEOPLE; i++) {
-//            userRepository.register(UserCreateRequest.builder()
-//                    .nickname("test"+i)
-//                    .careerYear(i)
-//                    .build());
-//        }
-//
-//        MeetingCreate meetingCreate = MeetingCreate.builder()
-//                .leaderUserId(1L)
-//                .meetingName("test meetingName")
-//                .content("test content")
-//                .meetingType(MeetingType.PROJECT)
-//                .meetingStatus(MeetingStatus.RECRUITING)
-//                .processWay(ProcessWay.ONOFFLINE)
-//                .startDateTime(LocalDateTime.now())
-//                .expiredDateTime(LocalDateTime.of(2024,3,20,12,0,0))
-//                .headCount(5)
-//                .build();
-//
-//        Meeting meeting = meetingService.create(meetingCreate);
-//        Meeting byId = meetingRepository.findById(meeting.getId());
-//        System.out.println("byId = " + byId);
-//
-//        ExecutorService service = Executors.newFixedThreadPool(PARTICIPATION_PEOPLE);
-//        CountDownLatch countDownLatch = new CountDownLatch(PARTICIPATION_PEOPLE);
-//
-//        //when
-//        for(int i = 1; i <= PARTICIPATION_PEOPLE; i++) {
-//            int userId = i;
-//            service.execute(() -> {
-//                try {
-//                    //테스트될 메소드
-//                    meetingService.joinAccept(1L, (long) userId);
-//                    System.out.println("Tid : " + userId);
-//                } catch(Exception e) {
-//                    e.printStackTrace();
-//                }
-//                countDownLatch.countDown();
-//            });
-//        }
-//        countDownLatch.await();
-//
-//
-//        List<MeetingJoinMember> result = meetingJoinMemberRepository.findByMeetingId(meeting.getId());
-//        Meeting meetingResult = meetingRepository.findById(meeting.getId());
-//
-//        //then
-//        assertThat(result).hasSize(5);
-//        assertThat(meetingResult.getHeadCount()).isEqualTo(0);
-//    }
 
+    @DisplayName("모임 참가 신청을 수락 할 수 있다.")
+    @Test
+    void joinAccept() {
+        //given
+        User registerdUser = userRepository.register(UserCreateRequest.builder()
+                .nickname("test")
+                .careerYear(2)
+                .build());
+
+        MeetingCreate meetingCreate = MeetingCreate.builder()
+                .leaderUserId(1L)
+                .meetingName("test meetingName")
+                .content("test content")
+                .meetingType(MeetingType.PROJECT)
+                .meetingStatus(MeetingStatus.RECRUITING)
+                .processWay(ProcessWay.ONOFFLINE)
+                .startDateTime(LocalDateTime.now())
+                .expiredDateTime(LocalDateTime.of(2024,3,20,12,0,0))
+                .headCount(5)
+                .build();
+
+        Meeting meeting = meetingService.create(meetingCreate);
+
+        MeetingJoinMember meetingJoinMember = meetingService.joinRequest(meeting.getId(), registerdUser.getId());
+
+        //when
+        meetingService.joinAccept(meetingJoinMember.getId());
+
+        MeetingJoinMember result = meetingJoinMemberRepository.findById(meetingJoinMember.getId());
+        Meeting resultMeeting = meetingRepository.findById(meeting.getId());
+        //then
+        assertThat(result.getJoinStatus()).isEqualTo(JoinStatus.ACCEPT);
+        assertThat(resultMeeting.getHeadCount()).isEqualTo(4);
+
+    }
 
 
 }

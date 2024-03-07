@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class MeetingJoinMemberWriter {
     private final MeetingJoinMemberRepository meetingJoinMemberRepository;
 
-    public Long registerRequest(Long meetingId, Long joinUserId) {
+    public MeetingJoinMember registerRequest(Long meetingId, Long joinUserId) {
         return meetingJoinMemberRepository.registerRequest(meetingId, joinUserId);
     }
 

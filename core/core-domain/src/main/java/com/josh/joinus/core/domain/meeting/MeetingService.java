@@ -53,7 +53,7 @@ public class MeetingService {
     }
 
     @Transactional
-    public Long joinRequest(Long meetingId, Long joinUserId) {
+    public MeetingJoinMember joinRequest(Long meetingId, Long joinUserId) {
         //모임의 인원
         Meeting meeting = meetingReader.findById(meetingId);
 

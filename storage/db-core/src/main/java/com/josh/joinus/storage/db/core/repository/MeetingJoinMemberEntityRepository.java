@@ -41,8 +41,8 @@ public class MeetingJoinMemberEntityRepository implements MeetingJoinMemberRepos
     }
 
     @Override
-    public Long registerRequest(Long meetingId, Long joinUserId) {
-        return meetingJoinMemberJpaRepository.save(MeetingJoinMemberEntity.createRequest(meetingId, joinUserId)).getId();
+    public MeetingJoinMember registerRequest(Long meetingId, Long joinUserId) {
+        return meetingJoinMemberJpaRepository.save(MeetingJoinMemberEntity.createRequest(meetingId, joinUserId)).toDomain();
     }
 
     @Override

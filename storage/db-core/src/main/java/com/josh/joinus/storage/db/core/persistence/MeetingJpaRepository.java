@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface MeetingJpaRepository extends JpaRepository<MeetingEntity, Long> {
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("update MeetingEntity m set m.viewCount = :viewCount where m.id = :meetingId")
     void updateViewCount(@Param("meetingId") Long meetingId, @Param("viewCount") int viewCount);
 
@@ -22,7 +22,7 @@ public interface MeetingJpaRepository extends JpaRepository<MeetingEntity, Long>
     @Query("select m from MeetingEntity m where m.id = :meetingId")
     Optional<MeetingEntity> findByIdLock(@Param("meetingId") Long meetingId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("update MeetingEntity m set m.headCount = :headCount where m.id = :meetingId")
     void updateHeadCount(@Param("meetingId") Long meetingId, @Param("headCount") int headCount);
 }

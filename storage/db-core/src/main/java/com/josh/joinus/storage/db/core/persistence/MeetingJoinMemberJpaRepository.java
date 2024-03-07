@@ -13,7 +13,7 @@ import java.util.List;
 public interface MeetingJoinMemberJpaRepository extends JpaRepository<MeetingJoinMemberEntity, Long> {
     List<MeetingJoinMemberEntity> findByMeetingId(Long meetingId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("update MeetingJoinMemberEntity mjm set mjm.joinStatus = :accept where mjm.id = :meetingJoinMemberId")
     int updateAccept(@Param("meetingJoinMemberId") Long meetingJoinMemberId, @Param("accept") JoinStatus accept);
 }
