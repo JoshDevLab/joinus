@@ -43,6 +43,6 @@ public class MeetingController {
     public ResponseEntity<Long> join(@PathVariable String meetingId) {
         // 추후 security 도입 후 접속한 user 의 id 넣어줌
         Long joinUserId = 3L;
-        return ResponseEntity.ok(meetingService.join(Long.valueOf(meetingId), joinUserId));
+        return ResponseEntity.ok(meetingService.joinRequest(Long.valueOf(meetingId), joinUserId));
     }
 }
