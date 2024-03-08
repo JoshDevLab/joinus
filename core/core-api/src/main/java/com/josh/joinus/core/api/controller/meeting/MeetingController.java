@@ -45,4 +45,11 @@ public class MeetingController {
         Long joinUserId = 3L;
         return ResponseEntity.ok(meetingService.joinRequest(Long.valueOf(meetingId), joinUserId).getId());
     }
+
+    @PostMapping("/join/accept/{meetingJoinMemberId}")
+    public ResponseEntity<Long> joinAccept(@PathVariable String meetingJoinMemberId) {
+        // 추후 security 도입 후 접속한 user 의 id 넣어줌
+        Long joinUserId = 3L;
+        return ResponseEntity.ok(meetingService.joinAccept(Long.valueOf(meetingJoinMemberId)));
+    }
 }
