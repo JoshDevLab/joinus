@@ -2,6 +2,7 @@ package com.josh.joinus.core.domain.meeting;
 
 import com.josh.joinus.core.domain.Position;
 import com.josh.joinus.core.domain.Tech;
+import com.josh.joinus.core.domain.comment.MeetingComment;
 import lombok.Builder;
 import lombok.Getter;
 

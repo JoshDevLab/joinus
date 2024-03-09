@@ -1,7 +1,8 @@
-package com.josh.joinus.core.domain.meeting;
+package com.josh.joinus.core.domain.comment;
 
 import com.josh.joinus.core.domain.Base;
 import com.josh.joinus.core.domain.User;
+import com.josh.joinus.core.domain.meeting.Meeting;
 import lombok.Builder;
 import lombok.Getter;
 

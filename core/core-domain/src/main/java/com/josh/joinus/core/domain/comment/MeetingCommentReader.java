@@ -1,4 +1,4 @@
-package com.josh.joinus.core.domain.meeting;
+package com.josh.joinus.core.domain.comment;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

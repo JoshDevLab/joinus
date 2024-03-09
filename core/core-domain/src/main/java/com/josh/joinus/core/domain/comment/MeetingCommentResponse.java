@@ -1,4 +1,4 @@
-package com.josh.joinus.core.domain.meeting;
+package com.josh.joinus.core.domain.comment;
 
 import lombok.Getter;
 

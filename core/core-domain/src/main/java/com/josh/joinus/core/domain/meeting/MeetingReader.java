@@ -2,6 +2,8 @@ package com.josh.joinus.core.domain.meeting;
 
 import com.josh.joinus.core.domain.Position;
 import com.josh.joinus.core.domain.Tech;
+import com.josh.joinus.core.domain.comment.MeetingComment;
+import com.josh.joinus.core.domain.comment.MeetingCommentRepository;
 import com.josh.joinus.core.dto.request.MeetingSearchCondition;
 import com.josh.joinus.core.dto.response.MeetingPositionDto;
 import com.josh.joinus.core.dto.response.MeetingResponse;
