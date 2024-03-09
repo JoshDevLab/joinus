@@ -6,10 +6,7 @@ import com.josh.joinus.core.domain.meeting.MeetingCreate;
 import com.josh.joinus.core.domain.meeting.MeetingStatus;
 import com.josh.joinus.core.domain.meeting.MeetingType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +15,8 @@ import java.util.List;
 @Entity
 @Table(name = "meeting")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Getter
 public class MeetingEntity extends BaseEntity {
 
@@ -49,11 +48,13 @@ public class MeetingEntity extends BaseEntity {
     private LocalDateTime expiredDateTime;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "meetingEntity",
-                fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY)
+    @Builder.Default
     private List<MeetingTechEntity> meetingTechEntityList = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "meetingEntity",
             fetch = FetchType.LAZY)
+    @Builder.Default
     private List<MeetingPositionEntity> meetingPositionEntityList  = new ArrayList<>();
 
     public void addMeetingTechEntity(MeetingTechEntity meetingTechEntity) {
@@ -77,26 +78,6 @@ public class MeetingEntity extends BaseEntity {
                 .viewCount(0)
                 .expiredDateTime(meetingCreate.getExpiredDateTime())
                 .build();
-    }
-
-    @Builder
-    public MeetingEntity(Long id, Long leaderUserId, String meetingName, String content, MeetingType meetingType,
-                         ProcessWay processWay, MeetingStatus meetingStatus, LocalDateTime startDateTime, int headCount,
-                         int viewCount, LocalDateTime expiredDateTime, List<MeetingTechEntity> meetingTechEntityList,
-                         List<MeetingPositionEntity> meetingPositionEntityList) {
-        this.id = id;
-        this.leaderUserId = leaderUserId;
-        this.meetingName = meetingName;
-        this.content = content;
-        this.meetingType = meetingType;
-        this.processWay = processWay;
-        this.meetingStatus = meetingStatus;
-        this.startDateTime = startDateTime;
-        this.headCount = headCount;
-        this.viewCount = viewCount;
-        this.expiredDateTime = expiredDateTime;
-        this.meetingTechEntityList = meetingTechEntityList;
-        this.meetingPositionEntityList = meetingPositionEntityList;
     }
 
     public Meeting toDomain() {

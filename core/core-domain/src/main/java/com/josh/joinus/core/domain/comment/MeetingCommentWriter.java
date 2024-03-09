@@ -1,10 +1,8 @@
 package com.josh.joinus.core.domain.comment;
 
-import com.josh.joinus.core.domain.User;
 import com.josh.joinus.core.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 @Component
 @RequiredArgsConstructor
