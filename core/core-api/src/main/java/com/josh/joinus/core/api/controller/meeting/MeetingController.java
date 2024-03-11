@@ -1,7 +1,9 @@
 package com.josh.joinus.core.api.controller.meeting;
 
+import com.josh.joinus.core.api.controller.meeting.response.MeetingCreateResponse;
 import com.josh.joinus.core.api.dto.meeting.MeetingCreateRequest;
 import com.josh.joinus.core.api.reuqest.MeetingSearchRequest;
+import com.josh.joinus.core.api.support.response.ApiResponse;
 import com.josh.joinus.core.domain.meeting.Meeting;
 import com.josh.joinus.core.domain.meeting.MeetingDetailResponse;
 import com.josh.joinus.core.domain.meeting.MeetingService;
@@ -21,35 +23,35 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @PostMapping
-    public ResponseEntity<Meeting> create(@Valid @RequestBody MeetingCreateRequest meetingCreateRequest) {
-        return ResponseEntity.ok(meetingService.create(meetingCreateRequest.toServiceDto()));
+    public ApiResponse<MeetingCreateResponse> create(@Valid @RequestBody MeetingCreateRequest meetingCreateRequest) {
+        return ApiResponse.success(MeetingCreateResponse.of(meetingService.create(meetingCreateRequest.toServiceDto())));
     }
 
     @GetMapping
-    public ResponseEntity<List<MeetingResponse>> searchByCondition(
+    public ApiResponse<List<MeetingResponse>> searchByCondition(
             @ModelAttribute MeetingSearchRequest meetingSearchRequest)
     {
-        return ResponseEntity.ok(meetingService.searchByCondition(meetingSearchRequest.toServiceDto()));
+        return ApiResponse.success(meetingService.searchByCondition(meetingSearchRequest.toServiceDto()));
     }
 
     @GetMapping("/{meetingId}")
-    public ResponseEntity<MeetingDetailResponse> meetingDetail(@PathVariable String meetingId) {
+    public ApiResponse<MeetingDetailResponse> meetingDetail(@PathVariable String meetingId) {
         // 추후 security 도입 후 접속한 user 의 id 넣어줌
         Long accessUserId = 3L;
-        return ResponseEntity.ok(meetingService.meetingDetail(Long.valueOf(meetingId), accessUserId));
+        return ApiResponse.success(meetingService.meetingDetail(Long.valueOf(meetingId), accessUserId));
     }
 
     @PostMapping("/join/{meetingId}")
-    public ResponseEntity<Long> join(@PathVariable String meetingId) {
+    public ApiResponse<Long> join(@PathVariable String meetingId) {
         // 추후 security 도입 후 접속한 user 의 id 넣어줌
         Long joinUserId = 3L;
-        return ResponseEntity.ok(meetingService.joinRequest(Long.valueOf(meetingId), joinUserId).getId());
+        return ApiResponse.success(meetingService.joinRequest(Long.valueOf(meetingId), joinUserId).getId());
     }
 
     @PostMapping("/join/accept/{meetingJoinMemberId}")
-    public ResponseEntity<Long> joinAccept(@PathVariable String meetingJoinMemberId) {
+    public ApiResponse<Long> joinAccept(@PathVariable String meetingJoinMemberId) {
         // 추후 security 도입 후 접속한 user 의 id 넣어줌
         Long joinUserId = 3L;
-        return ResponseEntity.ok(meetingService.joinAccept(Long.valueOf(meetingJoinMemberId)));
+        return ApiResponse.success(meetingService.joinAccept(Long.valueOf(meetingJoinMemberId)));
     }
 }

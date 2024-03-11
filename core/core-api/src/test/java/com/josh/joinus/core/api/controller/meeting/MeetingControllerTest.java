@@ -61,6 +61,8 @@ class MeetingControllerTest extends RestDocsTest {
                         .meetingStatus(MeetingStatus.RECRUITING)
                         .startDateTime(LocalDateTime.of(2024, 3, 4, 9, 0, 0))
                         .headCount(5)
+                        .viewCount(0)
+                        .commentCount(0)
                         .expiredDateTime(LocalDateTime.of(2024, 6, 4, 9, 0, 0))
                         .build());
 
@@ -97,28 +99,31 @@ class MeetingControllerTest extends RestDocsTest {
                                 fieldWithPath("expiredDateTime").type(JsonFieldType.ARRAY)
                                         .description("마감일")
                         ),responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER)
+                                fieldWithPath("result").type(JsonFieldType.STRING)
+                                        .description("ResultType"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER)
                                         .description("모임 ID"),
-                                fieldWithPath("leaderUserId").type(JsonFieldType.NUMBER)
+                                fieldWithPath("data.leaderUserId").type(JsonFieldType.NUMBER)
                                         .description("방장 아이디"),
-                                fieldWithPath("meetingName").type(JsonFieldType.STRING)
+                                fieldWithPath("data.meetingName").type(JsonFieldType.STRING)
                                         .description("모임 이름"),
-                                fieldWithPath("content").type(JsonFieldType.STRING)
+                                fieldWithPath("data.content").type(JsonFieldType.STRING)
                                         .description("모임 내용"),
-                                fieldWithPath("meetingType").type(JsonFieldType.STRING)
+                                fieldWithPath("data.meetingType").type(JsonFieldType.STRING)
                                         .description("모임 타입"),
-                                fieldWithPath("processWay").type(JsonFieldType.STRING)
+                                fieldWithPath("data.processWay").type(JsonFieldType.STRING)
                                         .description("모집진행방식"),
-                                fieldWithPath("meetingStatus").type(JsonFieldType.STRING)
-                                        .description("모임 내용"),
-                                fieldWithPath("content").type(JsonFieldType.STRING)
+                                fieldWithPath("data.meetingStatus").type(JsonFieldType.STRING)
                                         .description("모임중"),
-                                fieldWithPath("startDateTime").type(JsonFieldType.ARRAY)
+                                fieldWithPath("data.startDateTime").type(JsonFieldType.ARRAY)
                                         .description("모임 시작날짜"),
-                                fieldWithPath("headCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("data.headCount").type(JsonFieldType.NUMBER)
                                         .description("인원수"),
-                                fieldWithPath("expiredDateTime").type(JsonFieldType.ARRAY)
-                                        .description("마감일")
+                                fieldWithPath("data.expiredDateTime").type(JsonFieldType.ARRAY)
+                                        .description("마감일"),
+                                fieldWithPath("error").type(JsonFieldType.ARRAY)
+                                        .description("에러")
+                                        .ignored()
 
                         )
                     ));
