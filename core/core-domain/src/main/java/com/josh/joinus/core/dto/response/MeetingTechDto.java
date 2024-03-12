@@ -1,12 +1,10 @@
 package com.josh.joinus.core.dto.response;
 
 import com.josh.joinus.core.domain.Tech;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
+@NoArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class MeetingTechDto {

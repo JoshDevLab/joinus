@@ -21,3 +21,15 @@ include::{snippets}/meeting-create/request-fields.adoc[]
 ==== HTTP Response
 include::{snippets}/meeting-create/http-response.adoc[]
 include::{snippets}/meeting-create/response-fields.adoc[]
+
+[[meeting-search]]
+=== 모임 검색
+
+==== Curl Request
+include::{snippets}/meeting-search/curl-request.adoc[]
+==== Query Parameters
+include::{snippets}/meeting-search/query-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/meeting-search/http-response.adoc[]
+include::{snippets}/meeting-search/response-fields.adoc[]
