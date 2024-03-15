@@ -6,4 +6,6 @@ public interface UserRepository {
     User register(UserCreateRequest userCreateRequest);
 
     User findById(Long joinUserId);
+
+    User findByUserId(String username);
 }

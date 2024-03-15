@@ -11,6 +11,5 @@ rootProject.name = 'joinus'
 
 include 'core:core-api'
 include 'core:core-domain'
-include 'security'
 include 'storage:db-core'
 include 'tests:api-docs'

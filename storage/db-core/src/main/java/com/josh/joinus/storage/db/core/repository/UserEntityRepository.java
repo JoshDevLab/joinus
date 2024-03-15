@@ -25,4 +25,9 @@ public class UserEntityRepository implements UserRepository {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."))
                 .toDomain();
     }
+
+    @Override
+    public User findByUserId(String username) {
+        return userJpaRepository.findByUserId(username).toDomain();
+    }
 }
