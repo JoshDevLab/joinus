@@ -4,6 +4,8 @@ import com.josh.joinus.core.security.config.properties.AppProperties;
 import com.josh.joinus.core.security.config.properties.CorsProperties;
 import com.josh.joinus.core.security.exception.RestAuthenticationEntryPoint;
 import com.josh.joinus.core.security.filter.TokenAuthenticationFilter;
+import com.josh.joinus.core.security.handler.OAuth2AuthenticationFailureHandler;
+import com.josh.joinus.core.security.handler.OAuth2AuthenticationSuccessHandler;
 import com.josh.joinus.core.security.handler.TokenAccessDeniedHandler;
 import com.josh.joinus.core.security.infrastructure.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.josh.joinus.core.security.service.CustomOAuth2UserService;
@@ -69,8 +71,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2Login -> oauth2Login.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuth2UserService)))
                 .oauth2Login(oauth2Login -> oauth2Login.successHandler(oAuth2AuthenticationSuccessHandler()))
                 .oauth2Login(oauth2Login -> oauth2Login.failureHandler(oAuth2AuthenticationFailureHandler()))
-                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(TokenAuthenticationFilter.class);
+                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -8,4 +8,10 @@ public interface UserRepository {
     User findById(Long joinUserId);
 
     User findByUserId(String username);
+
+    void save(User user);
+
+    void updateUserName(Long id, String name);
+
+    void updateProfileImg(Long id, String imageUrl);
 }

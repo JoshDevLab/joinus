@@ -1,6 +1,11 @@
 package com.josh.joinus.core.security.service;
 
+import com.josh.joinus.core.domain.User;
 import com.josh.joinus.core.domain.UserRepository;
+import com.josh.joinus.core.domain.oauth2.OAuth2UserInfo;
+import com.josh.joinus.core.domain.oauth2.OAuth2UserInfoFactory;
+import com.josh.joinus.core.domain.ProviderType;
+import com.josh.joinus.core.security.domain.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -8,6 +13,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -32,13 +38,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         //ProviderType 에 따른 유저정보 객체로 가져오기
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
 
-//        log.info("userInfo.getId() ===========> {}", userInfo.getId());
 
         User savedUser = userRepository.findByUserId(userInfo.getId());
 
         if (savedUser != null) {
             if (providerType != savedUser.getProviderType()) { //저장된 유저가 ProviderType 이 다르게 접속이 온경우
-                throw new OAuthProviderMissMatchException(
+                throw new RuntimeException(
                         "Looks like you're signed up with " + providerType +
                                 " account. Please use your " + savedUser.getProviderType() + " account to login."
                 );
@@ -53,7 +58,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Transactional
     public User createUser(OAuth2UserInfo userInfo, ProviderType providerType) {
-        User user = User.create(userInfo, providerType, clockHolder);
+        User user = User.create(userInfo, providerType);
         userRepository.save(user);
         return user;
     }
@@ -62,13 +67,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public User updateUser(User user, OAuth2UserInfo userInfo) {
 
         if (userInfo.getName() != null && !user.getUsername().equals(userInfo.getName())) {
-            user.updateUserName(userInfo.getName());
+            userRepository.updateUserName(user.getId(), userInfo.getName());
         }
 
         if (userInfo.getImageUrl() != null && !user.getProfileImageUrl().equals(userInfo.getImageUrl())) {
-            user.updateProfileImg(userInfo.getImageUrl());
+            userRepository.updateProfileImg(user.getId(), userInfo.getImageUrl());
         }
 
         return user;
     }
+
 }
