@@ -6,8 +6,8 @@ import org.springframework.boot.runApplication
 
 @ConfigurationPropertiesScan
 @SpringBootApplication
-class CoreApiApplication {
-    fun main(args: Array<String>) {
-        runApplication<CoreApiApplication>(*args)
-    }
+class CoreApiApplication
+
+fun main(args: Array<String>) {
+    runApplication<CoreApiApplication>(*args)
 }
