@@ -20,5 +20,9 @@ data class ApiResponse<T> private constructor(
         fun <S> error(error: ErrorType, errorData: Any? = null): ApiResponse<S> {
             return ApiResponse(ResultType.ERROR, null, ErrorMessage(error, errorData))
         }
+
+        fun unauthorized(error: ErrorType): ApiResponse<Any> {
+            return ApiResponse(ResultType.ERROR, null, ErrorMessage(error))
+        }
     }
 }
