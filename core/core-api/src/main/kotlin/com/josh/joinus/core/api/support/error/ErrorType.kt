@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus
 
 enum class ErrorType(val status: HttpStatus, val code: ErrorCode, val message: String, val logLevel: LogLevel) {
     DEFAULT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.E500, "An unexpected error has occurred.", LogLevel.ERROR),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, ErrorCode.E400, "Bad Request", LogLevel.INFO),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, ErrorCode.E401, "Empty Token.", LogLevel.INFO),
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, ErrorCode.E401, "Expired JWT token.", LogLevel.INFO),
     INVALID_ACCESS_TOKEN_VALUE(HttpStatus.UNAUTHORIZED, ErrorCode.E401, "Invalid access token", LogLevel.INFO),
